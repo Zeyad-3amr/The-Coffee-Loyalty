@@ -14,8 +14,9 @@ if (process.env.NODE_ENV === 'production' || process.env.USE_REAL_DB === 'true')
       });
 
     if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
+    console.log('✓ Using real Prisma client');
   } catch (e) {
-    console.error('Prisma client error, falling back to mock:', e);
+    console.error('✗ Prisma client init failed:', e instanceof Error ? e.message : e);
     const { prisma: mockPrisma } = require('./db-mock');
     prisma = mockPrisma;
   }
@@ -23,6 +24,7 @@ if (process.env.NODE_ENV === 'production' || process.env.USE_REAL_DB === 'true')
   // Use mock database for local development
   const { prisma: mockPrisma } = require('./db-mock');
   prisma = mockPrisma;
+  console.log('✓ Using mock database');
 }
 
 export default prisma;
