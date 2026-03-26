@@ -1,0 +1,46 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Shop {
+  id        String   @id @default(cuid())
+  name      String
+  qrCode    String   @unique
+  createdAt DateTime @default(now())
+
+  customers Stamp[]
+}
+
+model Customer {
+  id           String   @id @default(cuid())
+  phoneNumber  String   @unique
+  createdAt    DateTime @default(now())
+
+  stamps       Stamp[]
+}
+
+model Stamp {
+  id             String    @id @default(cuid())
+  shopId         String
+  customerId     String
+  stampCount     Int       @default(0)
+  lastScannedAt  DateTime?
+  rewardActive   Boolean   @default(false)
+  rewardExpiresAt DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  shop           Shop      @relation(fields: [shopId], references: [id], onDelete: Cascade)
+  customer       Customer  @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  @@unique([shopId, customerId])
+}
