@@ -1,30 +1,41 @@
-// Use mock database for local testing, real Prisma for production
+// Use real Prisma with fallback to mock
 let prisma: any;
 
-if (process.env.NODE_ENV === 'production' || process.env.USE_REAL_DB === 'true') {
-  // Use real Prisma in production or when explicitly requested
-  try {
-    const { PrismaClient } = require('@prisma/client');
-    const globalForPrisma = global as unknown as { prisma: any };
+const globalForPrisma = global as unknown as { prisma?: any };
 
-    prisma =
-      globalForPrisma.prisma ||
-      new PrismaClient({
-        log: ['error', 'warn'],
+function initializePrisma() {
+  if (globalForPrisma.prisma) {
+    return globalForPrisma.prisma;
+  }
+
+  try {
+    // Only use real Prisma in production when DATABASE_URL is set
+    if (process.env.NODE_ENV === 'production' && process.env.DATABASE_URL) {
+      const { PrismaClient } = require('@prisma/client');
+      const client = new PrismaClient({
+        log: process.env.DEBUG ? ['query', 'error', 'warn'] : ['error'],
       });
 
-    if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
-    console.log('✓ Using real Prisma client');
+      globalForPrisma.prisma = client;
+      console.log('✓ Initialized real Prisma client');
+      return client;
+    }
   } catch (e) {
-    console.error('✗ Prisma client init failed:', e instanceof Error ? e.message : e);
-    const { prisma: mockPrisma } = require('./db-mock');
-    prisma = mockPrisma;
+    console.error('Prisma init error:', e instanceof Error ? e.message : String(e));
   }
-} else {
-  // Use mock database for local development
-  const { prisma: mockPrisma } = require('./db-mock');
-  prisma = mockPrisma;
-  console.log('✓ Using mock database');
+
+  // Fallback to mock database
+  try {
+    const { prisma: mockPrisma } = require('./db-mock');
+    globalForPrisma.prisma = mockPrisma;
+    console.log('✓ Using mock database');
+    return mockPrisma;
+  } catch (mockError) {
+    console.error('Mock database error:', mockError);
+    throw new Error('Failed to initialize any database');
+  }
 }
+
+prisma = initializePrisma();
 
 export default prisma;
