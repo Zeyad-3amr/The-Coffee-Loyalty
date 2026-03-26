@@ -83,12 +83,11 @@ export default function SetupPage() {
 
   if (pageState === 'input') {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-orange-50 to-amber-50 px-4">
-        <div className="w-full max-w-md">
+      <div className="min-h-screen bg-white px-4 py-12">
+        <div className="max-w-md mx-auto">
           <div className="text-center mb-8">
-            <h1 className="text-4xl mb-2">☕</h1>
-            <h2 className="text-2xl font-bold text-gray-900">Setup Your Coffee Shop</h2>
-            <p className="text-gray-600 text-sm mt-2">Get started with the loyalty program</p>
+            <h1 className="text-4xl font-bold text-gray-900 mb-2">Create Your Shop</h1>
+            <p className="text-gray-600">Get your unique QR code to start collecting stamps</p>
           </div>
 
           <div className="space-y-4">
@@ -103,12 +102,12 @@ export default function SetupPage() {
                   setShopName(e.target.value);
                   setShopNameError('');
                 }}
-                placeholder="e.g., Downtown Coffee"
+                placeholder="Downtown Coffee"
                 maxLength={50}
-                className={`w-full px-4 py-3 border-2 rounded-lg focus:outline-none ${
+                className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 ${
                   shopNameError
-                    ? 'border-red-500 focus:border-red-600'
-                    : 'border-gray-300 focus:border-orange-500'
+                    ? 'border-red-500 focus:ring-red-500'
+                    : 'border-gray-300 focus:ring-amber-600'
                 }`}
               />
               {shopNameError && (
@@ -119,9 +118,9 @@ export default function SetupPage() {
             <button
               onClick={handleCreateShop}
               disabled={!shopName.trim() || isSubmitting}
-              className="w-full bg-orange-500 hover:bg-orange-600 disabled:bg-gray-300 text-white font-bold py-3 rounded-lg transition"
+              className="w-full bg-amber-600 hover:bg-amber-700 disabled:bg-gray-300 text-white font-medium py-3 rounded-lg transition"
             >
-              {isSubmitting ? 'Creating Shop...' : 'Create Shop & Generate QR Code'}
+              {isSubmitting ? 'Creating Shop...' : 'Create Shop'}
             </button>
           </div>
         </div>
@@ -131,7 +130,7 @@ export default function SetupPage() {
 
   if (pageState === 'loading') {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gradient-to-b from-orange-50 to-amber-50">
+      <div className="flex items-center justify-center min-h-screen bg-white">
         <div className="text-center">
           <div className="text-4xl mb-4 animate-bounce">☕</div>
           <p className="text-gray-600">Creating your shop...</p>
@@ -148,24 +147,23 @@ export default function SetupPage() {
     const scanUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}/scan/${qrCode}`;
 
     return (
-      <div className="min-h-screen bg-gradient-to-b from-green-50 to-emerald-50 px-4 py-8">
+      <div className="min-h-screen bg-white px-4 py-12">
         <div className="max-w-md mx-auto">
           {/* Success Header */}
           <div className="text-center mb-8">
-            <h1 className="text-4xl mb-2">✨</h1>
-            <h2 className="text-2xl font-bold text-gray-900">Shop Created!</h2>
-            <p className="text-gray-600 text-sm mt-2">{shopName}</p>
+            <h1 className="text-4xl font-bold text-gray-900 mb-2">Shop Created!</h1>
+            <p className="text-gray-600">{shopName}</p>
           </div>
 
           {/* QR Code Section */}
-          <div className="bg-white rounded-lg shadow-lg p-8 mb-6">
+          <div className="bg-gray-50 rounded-lg p-8 mb-6 border border-gray-200">
             <div className="text-center mb-4">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">
+              <h3 className="text-lg font-semibold text-gray-900 mb-6">
                 Customer Scan Code
               </h3>
               <div
                 ref={qrRef}
-                className="bg-white p-4 rounded-lg inline-block"
+                className="bg-white p-4 rounded-lg inline-block border border-gray-200"
               >
                 <QRCodeSVG
                   value={scanUrl}
@@ -181,43 +179,38 @@ export default function SetupPage() {
             <div className="mt-6 space-y-2">
               <button
                 onClick={handleDownloadQR}
-                className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 rounded-lg transition"
+                className="w-full bg-amber-600 hover:bg-amber-700 text-white font-medium py-3 rounded-lg transition"
               >
-                📥 Download QR Code as PNG
+                Download QR Code
               </button>
               <a
                 href={`/print-qr/${shopId}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 rounded-lg transition flex items-center justify-center gap-2"
+                className="w-full border border-gray-300 hover:border-gray-400 text-gray-900 font-medium py-3 rounded-lg transition flex items-center justify-center"
               >
-                🖨️ View Printable QR Code
+                View Printable QR Code
               </a>
-              <p className="text-xs text-gray-500 text-center">
-                Print this QR code and display at your counter
-              </p>
             </div>
           </div>
 
           {/* Admin Access Section */}
-          <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
-            <h3 className="text-lg font-semibold text-gray-900 mb-3">Your Admin Dashboard</h3>
+          <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
+            <h3 className="text-lg font-semibold text-gray-900 mb-3">Admin Dashboard</h3>
             <p className="text-sm text-gray-600 mb-4">
-              View customers, manage stamps, and track loyalty program performance
+              View customers and manage stamps
             </p>
             <button
               onClick={handleGoToAdmin}
-              className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded-lg transition"
+              className="w-full bg-amber-600 hover:bg-amber-700 text-white font-medium py-3 rounded-lg transition"
             >
-              Go to Admin Dashboard
+              Go to Dashboard
             </button>
           </div>
 
           {/* Info Section */}
-          <div className="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-lg">
-            <p className="text-sm text-amber-800">
-              <strong>Note:</strong> Save the admin dashboard URL in your bookmarks. You can come back anytime by visiting <code className="text-xs font-mono bg-amber-100 px-2 py-1 rounded">/admin/{shopId}</code>
-            </p>
+          <div className="bg-amber-50 p-4 rounded-lg border border-amber-200 text-sm text-gray-700">
+            Save the dashboard URL: <code className="bg-white px-2 py-1 rounded font-mono text-xs">/admin/{shopId}</code>
           </div>
         </div>
       </div>

@@ -113,12 +113,11 @@ export default function ScanPage({ params }: ScanPageProps) {
 
   if (pageState === 'input') {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-orange-50 to-amber-50 px-4">
+      <div className="flex flex-col items-center justify-center min-h-screen bg-white px-4">
         <div className="w-full max-w-sm">
           <div className="text-center mb-8">
-            <h1 className="text-4xl mb-2">☕</h1>
-            <h2 className="text-2xl font-bold text-gray-900">Coffee Loyalty</h2>
-            <p className="text-gray-600 text-sm mt-2">Enter your phone number</p>
+            <h1 className="text-4xl font-bold text-gray-900 mb-2">Scan to Collect</h1>
+            <p className="text-gray-600">Enter your phone number</p>
           </div>
 
           <div className="space-y-4">
@@ -132,10 +131,10 @@ export default function ScanPage({ params }: ScanPageProps) {
                 onChange={handlePhoneChange}
                 placeholder="01012345678"
                 maxLength={11}
-                className={`w-full px-4 py-3 border-2 rounded-lg text-center text-lg font-mono focus:outline-none ${
+                className={`w-full px-4 py-3 border rounded-lg text-center text-lg font-mono focus:outline-none focus:ring-2 ${
                   phoneError
-                    ? 'border-red-500 focus:border-red-600'
-                    : 'border-gray-300 focus:border-orange-500'
+                    ? 'border-red-500 focus:ring-red-500'
+                    : 'border-gray-300 focus:ring-amber-600'
                 }`}
               />
               {phoneError && (
@@ -146,7 +145,7 @@ export default function ScanPage({ params }: ScanPageProps) {
             <button
               onClick={handlePhoneSubmit}
               disabled={phoneNumber.length !== 11}
-              className="w-full bg-orange-500 hover:bg-orange-600 disabled:bg-gray-300 text-white font-bold py-3 rounded-lg transition"
+              className="w-full bg-amber-600 hover:bg-amber-700 disabled:bg-gray-300 text-white font-medium py-3 rounded-lg transition"
             >
               Continue
             </button>
@@ -158,11 +157,11 @@ export default function ScanPage({ params }: ScanPageProps) {
 
   if (pageState === 'confirm') {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-orange-50 to-amber-50 px-4">
+      <div className="flex flex-col items-center justify-center min-h-screen bg-white px-4">
         <div className="w-full max-w-sm text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Confirm Your Number</h2>
-          <div className="bg-white rounded-lg p-6 mb-6 border-2 border-orange-200">
-            <p className="text-4xl font-bold text-orange-600">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">Confirm Your Number</h2>
+          <div className="bg-gray-50 rounded-lg p-6 mb-6 border border-gray-200">
+            <p className="text-4xl font-bold text-amber-600">
               {formatPhoneNumber(phoneNumber)}
             </p>
           </div>
@@ -171,16 +170,16 @@ export default function ScanPage({ params }: ScanPageProps) {
             <button
               onClick={handleConfirm}
               disabled={isSubmitting}
-              className="w-full bg-green-500 hover:bg-green-600 disabled:bg-gray-300 text-white font-bold py-3 rounded-lg transition"
+              className="w-full bg-amber-600 hover:bg-amber-700 disabled:bg-gray-300 text-white font-medium py-3 rounded-lg transition"
             >
-              {isSubmitting ? 'Processing...' : 'Yes, This Is Correct'}
+              {isSubmitting ? 'Processing...' : 'Confirm'}
             </button>
             <button
               onClick={handleEdit}
               disabled={isSubmitting}
-              className="w-full border-2 border-gray-300 hover:border-gray-400 text-gray-700 font-bold py-3 rounded-lg transition"
+              className="w-full border border-gray-300 hover:border-gray-400 text-gray-700 font-medium py-3 rounded-lg transition"
             >
-              Edit Number
+              Edit
             </button>
           </div>
         </div>
@@ -190,10 +189,10 @@ export default function ScanPage({ params }: ScanPageProps) {
 
   if (pageState === 'loading') {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-orange-50 to-amber-50">
+      <div className="flex flex-col items-center justify-center min-h-screen bg-white">
         <div className="text-center">
           <div className="text-4xl mb-4 animate-bounce">☕</div>
-          <p className="text-gray-600">Processing your stamp...</p>
+          <p className="text-gray-600">Processing...</p>
         </div>
       </div>
     );
@@ -201,21 +200,21 @@ export default function ScanPage({ params }: ScanPageProps) {
 
   if (pageState === 'success') {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-orange-50 to-amber-50 px-4">
+      <div className="flex flex-col items-center justify-center min-h-screen bg-white px-4">
         <div className="w-full max-w-sm text-center">
-          <div className="mb-6">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">✨ Stamp Added!</h2>
+          <div className="mb-8">
+            <h2 className="text-3xl font-bold text-gray-900">Stamp Added!</h2>
           </div>
 
           {/* Stamp card visualization */}
-          <div className="bg-white rounded-lg p-8 shadow-lg mb-6 border-2 border-orange-200">
+          <div className="bg-gray-50 rounded-lg p-8 mb-8 border border-gray-200">
             <div className="grid grid-cols-5 gap-2 mb-4">
               {Array.from({ length: 10 }).map((_, i) => (
                 <div
                   key={i}
                   className={`aspect-square rounded-lg font-bold flex items-center justify-center text-sm ${
                     i < stampCount
-                      ? 'bg-orange-500 text-white'
+                      ? 'bg-amber-600 text-white'
                       : 'bg-gray-200 text-gray-400'
                   }`}
                 >
@@ -223,8 +222,8 @@ export default function ScanPage({ params }: ScanPageProps) {
                 </div>
               ))}
             </div>
-            <p className="text-2xl font-bold text-orange-600">
-              {stampCount}/10 Stamps
+            <p className="text-2xl font-bold text-gray-900">
+              {stampCount}/10
             </p>
           </div>
 
@@ -234,9 +233,9 @@ export default function ScanPage({ params }: ScanPageProps) {
               setStampCount(0);
               setPageState('input');
             }}
-            className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded-lg transition"
+            className="w-full bg-amber-600 hover:bg-amber-700 text-white font-medium py-3 rounded-lg transition"
           >
-            Scan Another Code
+            Scan Another
           </button>
         </div>
       </div>
@@ -323,11 +322,11 @@ export default function ScanPage({ params }: ScanPageProps) {
 
   if (pageState === 'cooldown') {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-orange-50 to-amber-50 px-4">
+      <div className="flex flex-col items-center justify-center min-h-screen bg-white px-4">
         <div className="w-full max-w-sm text-center">
           <div className="text-6xl mb-4">⏱️</div>
           <h2 className="text-2xl font-bold text-gray-900 mb-4">Please Wait</h2>
-          <p className="text-gray-600 mb-6">
+          <p className="text-gray-600 mb-8">
             You already scanned recently. Please wait a few minutes before scanning again.
           </p>
           <button
@@ -335,9 +334,9 @@ export default function ScanPage({ params }: ScanPageProps) {
               setPhoneNumber('');
               setPageState('input');
             }}
-            className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 rounded-lg transition"
+            className="w-full bg-amber-600 hover:bg-amber-700 text-white font-medium py-3 rounded-lg transition"
           >
-            Try Again Later
+            Try Again
           </button>
         </div>
       </div>

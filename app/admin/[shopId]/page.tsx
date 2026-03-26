@@ -130,24 +130,23 @@ export default function AdminPage({ params }: AdminPageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-white">
       {/* Header */}
-      <div className="bg-white shadow">
+      <div className="border-b border-gray-200">
         <div className="max-w-6xl mx-auto px-6 py-8 flex justify-between items-start">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
-              <span>☕</span>
+            <h1 className="text-3xl font-bold text-gray-900 mb-1">
               {adminData?.shop?.name}
             </h1>
-            <p className="text-gray-600 mt-2">Shop ID: {adminData?.shop?.id}</p>
+            <p className="text-gray-600 text-sm">Shop ID: {adminData?.shop?.id}</p>
           </div>
           <a
             href={`/print-qr/${shopId}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition flex items-center gap-2"
+            className="bg-amber-600 hover:bg-amber-700 text-white font-medium py-2 px-4 rounded-lg transition"
           >
-            🖨️ Print QR Code
+            Print QR Code
           </a>
         </div>
       </div>
@@ -155,31 +154,31 @@ export default function AdminPage({ params }: AdminPageProps) {
       <div className="max-w-6xl mx-auto px-6 py-8 space-y-8">
         {/* Statistics Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
             <div className="text-gray-600 text-sm font-medium mb-2">Total Customers</div>
-            <div className="text-4xl font-bold text-orange-600">
+            <div className="text-4xl font-bold text-gray-900">
               {adminData?.totals?.totalCustomers ?? 0}
             </div>
           </div>
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
             <div className="text-gray-600 text-sm font-medium mb-2">Total Stamps Given</div>
-            <div className="text-4xl font-bold text-blue-600">
+            <div className="text-4xl font-bold text-gray-900">
               {adminData?.totals?.totalStampsGiven ?? 0}
             </div>
           </div>
-          <div className="bg-white rounded-lg shadow p-6">
+          <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
             <div className="text-gray-600 text-sm font-medium mb-2">Active Rewards</div>
-            <div className="text-4xl font-bold text-green-600">
+            <div className="text-4xl font-bold text-gray-900">
               {adminData?.totals?.totalRewardsRedeemed ?? 0}
             </div>
           </div>
         </div>
 
         {/* Manual Stamp Section */}
-        <div className="bg-white rounded-lg shadow p-6">
-          <h2 className="text-xl font-bold text-gray-900 mb-4">Add Stamp Manually</h2>
+        <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
+          <h2 className="text-lg font-semibold text-gray-900 mb-2">Add Stamp Manually</h2>
           <p className="text-gray-600 text-sm mb-4">
-            Use this if the customer's phone doesn't work or for other issues
+            Use this if the customer's phone doesn't work
           </p>
           <div className="flex gap-3">
             <input
@@ -192,40 +191,40 @@ export default function AdminPage({ params }: AdminPageProps) {
               }}
               placeholder="01012345678"
               maxLength={11}
-              className={`flex-1 px-4 py-2 border rounded-lg font-mono focus:outline-none ${
+              className={`flex-1 px-4 py-2 border rounded-lg font-mono focus:outline-none focus:ring-2 ${
                 manualError
-                  ? 'border-red-500 focus:border-red-600'
-                  : 'border-gray-300 focus:border-orange-500'
+                  ? 'border-red-500 focus:ring-red-500'
+                  : 'border-gray-300 focus:ring-amber-600'
               }`}
             />
             <button
               onClick={handleAddManualStamp}
               disabled={manualPhone.length !== 11 || isAddingStamp}
-              className="bg-orange-500 hover:bg-orange-600 disabled:bg-gray-300 text-white font-bold px-6 py-2 rounded-lg transition"
+              className="bg-amber-600 hover:bg-amber-700 disabled:bg-gray-300 text-white font-medium px-6 py-2 rounded-lg transition"
             >
-              {isAddingStamp ? 'Adding...' : 'Add Stamp'}
+              {isAddingStamp ? 'Adding...' : 'Add'}
             </button>
           </div>
           {manualError && <p className="text-red-600 text-sm mt-2">{manualError}</p>}
         </div>
 
         {/* Customers List */}
-        <div className="bg-white rounded-lg shadow overflow-hidden">
-          <div className="px-6 py-4 border-b border-gray-200">
-            <h2 className="text-xl font-bold text-gray-900">Customers</h2>
+        <div className="overflow-hidden border border-gray-200 rounded-lg">
+          <div className="px-6 py-4 bg-gray-50 border-b border-gray-200">
+            <h2 className="text-lg font-semibold text-gray-900">Customers</h2>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full">
               <thead className="bg-gray-50 border-b border-gray-200">
                 <tr>
                   <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">
-                    Phone Number
+                    Phone
                   </th>
                   <th className="px-6 py-3 text-center text-sm font-semibold text-gray-900">
                     Stamps
                   </th>
                   <th className="px-6 py-3 text-center text-sm font-semibold text-gray-900">
-                    Reward Status
+                    Reward
                   </th>
                   <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">
                     Last Scan
@@ -246,14 +245,14 @@ export default function AdminPage({ params }: AdminPageProps) {
                         {formatPhoneNumber(customer.phoneNumber)}
                       </td>
                       <td className="px-6 py-4 text-center">
-                        <span className="inline-block bg-orange-100 text-orange-800 px-3 py-1 rounded-full text-sm font-bold">
+                        <span className="inline-block bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-sm font-medium">
                           {customer.stampCount}/10
                         </span>
                       </td>
                       <td className="px-6 py-4 text-center">
                         {customer.rewardActive ? (
-                          <span className="inline-block bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-bold">
-                            ✓ Active
+                          <span className="inline-block bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                            Active
                           </span>
                         ) : (
                           <span className="text-gray-500 text-sm">—</span>
