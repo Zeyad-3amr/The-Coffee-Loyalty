@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import prisma from '@/app/lib/prisma';
+import { query } from '@/app/lib/db';
 
 export async function GET(
   request: NextRequest,
@@ -9,41 +9,40 @@ export async function GET(
     const { shopId } = params;
 
     // Find shop
-    const shop = await prisma.shop.findUnique({
-      where: { id: shopId },
-    });
+    const shopResult = await query(
+      'SELECT id, name, "qrCode" FROM "Shop" WHERE id = $1',
+      [shopId]
+    );
 
-    if (!shop) {
+    if (shopResult.rows.length === 0) {
       return NextResponse.json(
         { error: 'Shop not found' },
         { status: 404 }
       );
     }
 
-    // Get all stamps for this shop with customer info
-    const stamps = await prisma.stamp.findMany({
-      where: { shopId },
-      include: {
-        customer: true,
-      },
-      orderBy: { updatedAt: 'desc' },
-    });
+    const shop = shopResult.rows[0];
 
-    // Calculate totals
+    // Get stamps with customer info
+    const stampsResult = await query(
+      `SELECT s.*, c."phoneNumber" FROM "Stamp" s
+       JOIN "Customer" c ON s."customerId" = c.id
+       WHERE s."shopId" = $1
+       ORDER BY s."updatedAt" DESC`,
+      [shopId]
+    );
+
+    const stamps = stampsResult.rows;
     const totalCustomers = stamps.length;
     const totalStampsGiven = stamps.reduce((sum: number, s: any) => sum + s.stampCount, 0);
     const totalRewardsRedeemed = stamps.filter((s: any) => s.rewardActive).length;
 
     return NextResponse.json({
       success: true,
-      shop: {
-        id: shop.id,
-        name: shop.name,
-        qrCode: shop.qrCode,
-      },
+      shop,
       customers: stamps.map((s: any) => ({
-        id: s.customer.id,
-        phoneNumber: s.customer.phoneNumber,
+        id: s.customerId,
+        phoneNumber: s.phoneNumber,
         stampCount: s.stampCount,
         rewardActive: s.rewardActive,
         rewardExpiresAt: s.rewardExpiresAt,

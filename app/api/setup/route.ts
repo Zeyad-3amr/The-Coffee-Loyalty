@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import prisma from '@/app/lib/prisma';
+import { query } from '@/app/lib/db';
 import { nanoid } from 'nanoid';
 
 export async function POST(request: NextRequest) {
@@ -14,15 +14,15 @@ export async function POST(request: NextRequest) {
     }
 
     // Generate unique QR code
-    const qrCode = nanoid(12); // 12-character unique ID
+    const qrCode = nanoid(12);
 
     // Create shop
-    const shop = await prisma.shop.create({
-      data: {
-        name: shopName.trim(),
-        qrCode,
-      },
-    });
+    const result = await query(
+      'INSERT INTO "Shop" (id, name, "qrCode", "createdAt") VALUES ($1, $2, $3, NOW()) RETURNING id, name, "qrCode"',
+      [nanoid(), shopName.trim(), qrCode]
+    );
+
+    const shop = result.rows[0];
 
     return NextResponse.json({
       success: true,
