@@ -112,10 +112,10 @@ export default function AdminPage({ params }: AdminPageProps) {
 
   if (pageState === 'loading') {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-50">
+      <div className="flex items-center justify-center min-h-screen bg-zinc-900">
         <div className="text-center">
           <div className="text-4xl mb-4 animate-bounce">☕</div>
-          <p className="text-gray-600">Loading shop data...</p>
+          <p className="text-zinc-400">Loading shop data...</p>
         </div>
       </div>
     );
@@ -130,15 +130,15 @@ export default function AdminPage({ params }: AdminPageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-zinc-950">
       {/* Header */}
-      <div className="border-b border-gray-200">
+      <div className="border-b border-zinc-800">
         <div className="max-w-6xl mx-auto px-6 py-8 flex justify-between items-start">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 mb-1">
+            <h1 className="text-3xl font-bold text-zinc-100 mb-1">
               {adminData?.shop?.name}
             </h1>
-            <p className="text-gray-600 text-sm">Shop ID: {adminData?.shop?.id}</p>
+            <p className="text-zinc-400 text-sm">Shop ID: {adminData?.shop?.id}</p>
           </div>
           <a
             href={`/print-qr/${shopId}`}
@@ -154,30 +154,30 @@ export default function AdminPage({ params }: AdminPageProps) {
       <div className="max-w-6xl mx-auto px-6 py-8 space-y-8">
         {/* Statistics Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
-            <div className="text-gray-600 text-sm font-medium mb-2">Total Customers</div>
-            <div className="text-4xl font-bold text-gray-900">
+          <div className="bg-zinc-900 rounded-lg p-6 border border-zinc-800">
+            <div className="text-zinc-400 text-sm font-medium mb-2">Total Customers</div>
+            <div className="text-4xl font-bold text-zinc-100">
               {adminData?.totals?.totalCustomers ?? 0}
             </div>
           </div>
-          <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
-            <div className="text-gray-600 text-sm font-medium mb-2">Total Stamps Given</div>
-            <div className="text-4xl font-bold text-gray-900">
+          <div className="bg-zinc-900 rounded-lg p-6 border border-zinc-800">
+            <div className="text-zinc-400 text-sm font-medium mb-2">Total Stamps Given</div>
+            <div className="text-4xl font-bold text-zinc-100">
               {adminData?.totals?.totalStampsGiven ?? 0}
             </div>
           </div>
-          <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
-            <div className="text-gray-600 text-sm font-medium mb-2">Active Rewards</div>
-            <div className="text-4xl font-bold text-gray-900">
+          <div className="bg-zinc-900 rounded-lg p-6 border border-zinc-800">
+            <div className="text-zinc-400 text-sm font-medium mb-2">Active Rewards</div>
+            <div className="text-4xl font-bold text-zinc-100">
               {adminData?.totals?.totalRewardsRedeemed ?? 0}
             </div>
           </div>
         </div>
 
         {/* Manual Stamp Section */}
-        <div className="bg-gray-50 rounded-lg p-6 border border-gray-200">
-          <h2 className="text-lg font-semibold text-gray-900 mb-2">Add Stamp Manually</h2>
-          <p className="text-gray-600 text-sm mb-4">
+        <div className="bg-zinc-900 rounded-lg p-6 border border-zinc-800">
+          <h2 className="text-lg font-semibold text-zinc-100 mb-2">Add Stamp Manually</h2>
+          <p className="text-zinc-400 text-sm mb-4">
             Use this if the customer's phone doesn't work
           </p>
           <div className="flex gap-3">
@@ -194,7 +194,7 @@ export default function AdminPage({ params }: AdminPageProps) {
               className={`flex-1 px-4 py-2 border rounded-lg font-mono focus:outline-none focus:ring-2 ${
                 manualError
                   ? 'border-red-500 focus:ring-red-500'
-                  : 'border-gray-300 focus:ring-amber-600'
+                  : 'border-zinc-700 focus:ring-amber-600'
               }`}
             />
             <button
@@ -209,24 +209,24 @@ export default function AdminPage({ params }: AdminPageProps) {
         </div>
 
         {/* Customers List */}
-        <div className="overflow-hidden border border-gray-200 rounded-lg">
-          <div className="px-6 py-4 bg-gray-50 border-b border-gray-200">
-            <h2 className="text-lg font-semibold text-gray-900">Customers</h2>
+        <div className="overflow-hidden border border-zinc-800 rounded-lg">
+          <div className="px-6 py-4 bg-zinc-900 border-b border-zinc-800">
+            <h2 className="text-lg font-semibold text-zinc-100">Customers</h2>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-gray-50 border-b border-gray-200">
+              <thead className="bg-zinc-900 border-b border-zinc-800">
                 <tr>
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">
+                  <th className="px-6 py-3 text-left text-sm font-semibold text-zinc-100">
                     Phone
                   </th>
-                  <th className="px-6 py-3 text-center text-sm font-semibold text-gray-900">
+                  <th className="px-6 py-3 text-center text-sm font-semibold text-zinc-100">
                     Stamps
                   </th>
-                  <th className="px-6 py-3 text-center text-sm font-semibold text-gray-900">
+                  <th className="px-6 py-3 text-center text-sm font-semibold text-zinc-100">
                     Reward
                   </th>
-                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-900">
+                  <th className="px-6 py-3 text-left text-sm font-semibold text-zinc-100">
                     Last Scan
                   </th>
                 </tr>
@@ -234,31 +234,31 @@ export default function AdminPage({ params }: AdminPageProps) {
               <tbody className="divide-y divide-gray-200">
                 {!adminData?.customers || adminData.customers.length === 0 ? (
                   <tr>
-                    <td colSpan={4} className="px-6 py-8 text-center text-gray-500">
+                    <td colSpan={4} className="px-6 py-8 text-center text-zinc-500">
                       No customers yet
                     </td>
                   </tr>
                 ) : (
                   adminData.customers.map((customer) => (
-                    <tr key={customer.id} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 text-sm font-mono text-gray-900">
+                    <tr key={customer.id} className="hover:bg-zinc-900">
+                      <td className="px-6 py-4 text-sm font-mono text-zinc-100">
                         {formatPhoneNumber(customer.phoneNumber)}
                       </td>
                       <td className="px-6 py-4 text-center">
-                        <span className="inline-block bg-amber-100 text-amber-800 px-3 py-1 rounded-full text-sm font-medium">
+                        <span className="inline-block bg-amber-500/10 text-amber-300 px-3 py-1 rounded-full text-sm font-medium">
                           {customer.stampCount}/10
                         </span>
                       </td>
                       <td className="px-6 py-4 text-center">
                         {customer.rewardActive ? (
-                          <span className="inline-block bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                          <span className="inline-block bg-green-500/10 text-green-300 px-3 py-1 rounded-full text-sm font-medium">
                             Active
                           </span>
                         ) : (
-                          <span className="text-gray-500 text-sm">—</span>
+                          <span className="text-zinc-500 text-sm">—</span>
                         )}
                       </td>
-                      <td className="px-6 py-4 text-sm text-gray-600">
+                      <td className="px-6 py-4 text-sm text-zinc-400">
                         {customer.lastScannedAt
                           ? new Date(customer.lastScannedAt).toLocaleDateString('en-EG', {
                               month: 'short',
