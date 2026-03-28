@@ -32,7 +32,6 @@ export default function ScanPage({ params }: ScanPageProps) {
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Check on mount if reward has expired
   useEffect(() => {
     const stored = sessionStorage.getItem(`reward_${shopCode}`);
     if (stored) {
@@ -90,7 +89,6 @@ export default function ScanPage({ params }: ScanPageProps) {
       }
 
       if (data.rewardActive) {
-        // Store reward in session storage
         sessionStorage.setItem(
           `reward_${shopCode}`,
           JSON.stringify({ expiresAt: data.rewardExpiresAt })
@@ -113,16 +111,16 @@ export default function ScanPage({ params }: ScanPageProps) {
 
   if (pageState === 'input') {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-white px-4">
-        <div className="w-full max-w-sm">
+      <div className="flex flex-col items-center justify-center min-h-screen bg-zinc-950 px-4 animate-fadeUp">
+        <div className="w-full max-w-sm card-dark p-8">
           <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-gray-900 mb-2">Scan to Collect</h1>
-            <p className="text-gray-600">Enter your phone number</p>
+            <h1 className="text-4xl font-bold text-zinc-100 mb-2">Scan to Collect</h1>
+            <p className="text-zinc-400">Enter your phone number</p>
           </div>
 
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-zinc-300 mb-2">
                 Phone Number
               </label>
               <input
@@ -131,21 +129,21 @@ export default function ScanPage({ params }: ScanPageProps) {
                 onChange={handlePhoneChange}
                 placeholder="01012345678"
                 maxLength={11}
-                className={`w-full px-4 py-3 border rounded-lg text-center text-lg font-mono focus:outline-none focus:ring-2 ${
+                className={`w-full px-4 py-3 bg-zinc-800 border rounded-lg text-center text-lg font-mono text-zinc-100 placeholder-zinc-500 focus:outline-none focus:ring-2 transition ${
                   phoneError
                     ? 'border-red-500 focus:ring-red-500'
-                    : 'border-gray-300 focus:ring-amber-600'
+                    : 'border-zinc-700 focus:ring-amber-500'
                 }`}
               />
               {phoneError && (
-                <p className="text-red-600 text-sm mt-2">{phoneError}</p>
+                <p className="text-red-400 text-sm mt-2">{phoneError}</p>
               )}
             </div>
 
             <button
               onClick={handlePhoneSubmit}
               disabled={phoneNumber.length !== 11}
-              className="w-full bg-amber-600 hover:bg-amber-700 disabled:bg-gray-300 text-white font-medium py-3 rounded-lg transition"
+              className="w-full btn-amber py-3 rounded-lg font-medium disabled:opacity-50"
             >
               Continue
             </button>
@@ -157,11 +155,11 @@ export default function ScanPage({ params }: ScanPageProps) {
 
   if (pageState === 'confirm') {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-white px-4">
-        <div className="w-full max-w-sm text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">Confirm Your Number</h2>
-          <div className="bg-gray-50 rounded-lg p-6 mb-6 border border-gray-200">
-            <p className="text-4xl font-bold text-amber-600">
+      <div className="flex flex-col items-center justify-center min-h-screen bg-zinc-950 px-4 animate-fadeUp">
+        <div className="w-full max-w-sm card-dark p-8 text-center">
+          <h2 className="text-2xl font-bold text-zinc-100 mb-6">Confirm Your Number</h2>
+          <div className="bg-zinc-800 rounded-lg p-6 mb-6 border border-zinc-700">
+            <p className="text-4xl font-bold text-amber-400">
               {formatPhoneNumber(phoneNumber)}
             </p>
           </div>
@@ -170,14 +168,14 @@ export default function ScanPage({ params }: ScanPageProps) {
             <button
               onClick={handleConfirm}
               disabled={isSubmitting}
-              className="w-full bg-amber-600 hover:bg-amber-700 disabled:bg-gray-300 text-white font-medium py-3 rounded-lg transition"
+              className="w-full btn-amber py-3 rounded-lg font-medium disabled:opacity-50"
             >
               {isSubmitting ? 'Processing...' : 'Confirm'}
             </button>
             <button
               onClick={handleEdit}
               disabled={isSubmitting}
-              className="w-full border border-gray-300 hover:border-gray-400 text-gray-700 font-medium py-3 rounded-lg transition"
+              className="w-full border border-zinc-700 hover:border-amber-500/50 text-zinc-300 hover:text-amber-400 font-medium py-3 rounded-lg transition"
             >
               Edit
             </button>
@@ -189,10 +187,10 @@ export default function ScanPage({ params }: ScanPageProps) {
 
   if (pageState === 'loading') {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-white">
-        <div className="text-center">
+      <div className="flex flex-col items-center justify-center min-h-screen bg-zinc-950">
+        <div className="text-center animate-fadeUp">
           <div className="text-4xl mb-4 animate-bounce">☕</div>
-          <p className="text-gray-600">Processing...</p>
+          <p className="text-zinc-400">Processing...</p>
         </div>
       </div>
     );
@@ -200,29 +198,29 @@ export default function ScanPage({ params }: ScanPageProps) {
 
   if (pageState === 'success') {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-white px-4">
+      <div className="flex flex-col items-center justify-center min-h-screen bg-zinc-950 px-4 animate-fadeUp">
         <div className="w-full max-w-sm text-center">
           <div className="mb-8">
-            <h2 className="text-3xl font-bold text-gray-900">Stamp Added!</h2>
+            <h2 className="text-3xl font-bold text-zinc-100">Stamp Added!</h2>
           </div>
 
-          {/* Stamp card visualization */}
-          <div className="bg-gray-50 rounded-lg p-8 mb-8 border border-gray-200">
+          <div className="card-dark p-8 mb-8 rounded-lg">
             <div className="grid grid-cols-5 gap-2 mb-4">
               {Array.from({ length: 10 }).map((_, i) => (
                 <div
                   key={i}
-                  className={`aspect-square rounded-lg font-bold flex items-center justify-center text-sm ${
+                  className={`aspect-square rounded-lg font-bold flex items-center justify-center text-sm animate-fadeUp ${
                     i < stampCount
-                      ? 'bg-amber-600 text-white'
-                      : 'bg-gray-200 text-gray-400'
+                      ? 'bg-gradient-to-br from-amber-400 to-amber-600 text-zinc-950'
+                      : 'bg-zinc-800 text-zinc-500'
                   }`}
+                  style={{ animationDelay: `${i * 0.05}s` }}
                 >
                   {i < stampCount ? '✓' : i + 1}
                 </div>
               ))}
             </div>
-            <p className="text-2xl font-bold text-gray-900">
+            <p className="text-2xl font-bold text-amber-400">
               {stampCount}/10
             </p>
           </div>
@@ -233,7 +231,7 @@ export default function ScanPage({ params }: ScanPageProps) {
               setStampCount(0);
               setPageState('input');
             }}
-            className="w-full bg-amber-600 hover:bg-amber-700 text-white font-medium py-3 rounded-lg transition"
+            className="w-full btn-amber py-3 rounded-lg font-medium"
           >
             Scan Another
           </button>
@@ -244,8 +242,7 @@ export default function ScanPage({ params }: ScanPageProps) {
 
   if (pageState === 'reward') {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-amber-300 via-orange-300 to-red-400 px-4 overflow-hidden">
-        {/* Animated background elements */}
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-zinc-900 via-amber-900 to-orange-900 px-4 overflow-hidden">
         <style>{`
           @keyframes float {
             0%, 100% { transform: translateY(0px) rotate(0deg); }
@@ -259,8 +256,13 @@ export default function ScanPage({ params }: ScanPageProps) {
             0%, 100% { transform: scale(1); }
             50% { transform: scale(1.1); }
           }
+          @keyframes neon-glow {
+            0%, 100% { text-shadow: 0 0 10px rgba(251, 146, 60, 0.5), 0 0 20px rgba(251, 146, 60, 0.3); }
+            50% { text-shadow: 0 0 20px rgba(251, 146, 60, 0.8), 0 0 40px rgba(251, 146, 60, 0.5); }
+          }
           .float-animation {
             animation: float 3s ease-in-out infinite;
+            opacity: 0.2;
           }
           .spin-animation {
             animation: spin 4s linear infinite;
@@ -268,46 +270,43 @@ export default function ScanPage({ params }: ScanPageProps) {
           .pulse-animation {
             animation: pulse-scale 2s ease-in-out infinite;
           }
+          .neon-glow-text {
+            animation: neon-glow 2s ease-in-out infinite;
+          }
         `}</style>
 
         <div className="relative w-full max-w-sm">
-          {/* Decorative elements */}
-          <div className="absolute -top-20 -left-10 text-6xl opacity-30 float-animation">☕</div>
-          <div className="absolute -bottom-20 -right-10 text-6xl opacity-30 float-animation" style={{ animationDelay: '1s' }}>☕</div>
+          <div className="absolute -top-20 -left-10 text-6xl float-animation">☕</div>
+          <div className="absolute -bottom-20 -right-10 text-6xl float-animation" style={{ animationDelay: '1s' }}>☕</div>
 
-          {/* Main reward card */}
-          <div className="bg-white rounded-3xl p-8 shadow-2xl text-center relative z-10">
-            {/* Spinning decoration */}
+          <div className="bg-zinc-900 rounded-3xl p-8 shadow-2xl text-center relative z-10 border border-amber-500/30 glow-amber">
             <div className="absolute -top-6 left-1/2 -translate-x-1/2 text-5xl spin-animation">🎉</div>
 
-            {/* Main content */}
             <div className="mt-4">
-              <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-red-600 mb-2">
+              <h1 className="text-5xl font-bold text-amber-400 mb-2 neon-glow-text">
                 Free Coffee!
               </h1>
-              <p className="text-gray-600 mb-6">You've earned a free coffee!</p>
+              <p className="text-zinc-300 mb-6">You've earned a free coffee reward</p>
 
-              {/* Animated coffee cup */}
               <div className="mb-6 flex justify-center">
                 <div className="text-8xl pulse-animation">☕</div>
               </div>
 
-              <div className="bg-gradient-to-r from-orange-100 to-red-100 rounded-xl p-4 mb-6">
-                <p className="text-sm text-gray-600 mb-2">Show this screen to the cashier</p>
-                <p className="text-2xl font-bold text-orange-600">Present Your Phone</p>
+              <div className="bg-amber-500/20 border border-amber-500/50 rounded-xl p-4 mb-6">
+                <p className="text-sm text-zinc-300 mb-2">Show this screen to the cashier</p>
+                <p className="text-2xl font-bold text-amber-400">Present Your Phone</p>
               </div>
 
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-zinc-400">
                 Reward expires in 7 minutes. Come back anytime within this window!
               </p>
             </div>
 
-            {/* Continuous animation indicator */}
             <div className="mt-6 flex justify-center gap-1">
               {[0, 1, 2].map((i) => (
                 <div
                   key={i}
-                  className="w-2 h-2 bg-orange-500 rounded-full"
+                  className="w-2 h-2 bg-amber-400 rounded-full"
                   style={{
                     animation: `pulse 1.5s ease-in-out ${i * 0.3}s infinite`,
                   }}
@@ -322,11 +321,11 @@ export default function ScanPage({ params }: ScanPageProps) {
 
   if (pageState === 'cooldown') {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-white px-4">
-        <div className="w-full max-w-sm text-center">
+      <div className="flex flex-col items-center justify-center min-h-screen bg-zinc-950 px-4 animate-fadeUp">
+        <div className="w-full max-w-sm card-dark p-8 text-center">
           <div className="text-6xl mb-4">⏱️</div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Please Wait</h2>
-          <p className="text-gray-600 mb-8">
+          <h2 className="text-2xl font-bold text-zinc-100 mb-4">Please Wait</h2>
+          <p className="text-zinc-400 mb-8">
             You already scanned recently. Please wait a few minutes before scanning again.
           </p>
           <button
@@ -334,7 +333,7 @@ export default function ScanPage({ params }: ScanPageProps) {
               setPhoneNumber('');
               setPageState('input');
             }}
-            className="w-full bg-amber-600 hover:bg-amber-700 text-white font-medium py-3 rounded-lg transition"
+            className="w-full btn-amber py-3 rounded-lg font-medium"
           >
             Try Again
           </button>
