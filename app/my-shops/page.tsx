@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { Sidebar } from '@/app/components/Sidebar';
 
 interface Shop {
   id: string;
@@ -72,25 +73,30 @@ export default function MyShopsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-950">
-      {/* Header */}
-      <div className="border-b border-zinc-800 sticky top-0 bg-zinc-950/95 backdrop-blur">
-        <div className="max-w-6xl mx-auto px-4 py-6 flex justify-between items-center">
-          <div>
-            <h1 className="text-3xl font-bold text-zinc-100">My Shops</h1>
-            <p className="text-zinc-400 mt-1">Manage your coffee loyalty programs</p>
-          </div>
-          <Link
-            href="/setup"
-            className="btn-amber px-6 py-2.5 rounded-lg flex items-center gap-2"
-          >
-            + Create New
-          </Link>
-        </div>
-      </div>
+    <div className="flex min-h-screen bg-zinc-950">
+      {/* Sidebar */}
+      <Sidebar />
 
-      {/* Content */}
-      <div className="max-w-6xl mx-auto px-4 py-12">
+      {/* Main Content */}
+      <main className="flex-1 overflow-auto">
+        {/* Header */}
+        <div className="border-b border-zinc-800 sticky top-0 bg-zinc-950/95 backdrop-blur">
+          <div className="max-w-6xl mx-auto px-4 py-6 flex justify-between items-center">
+            <div>
+              <h1 className="text-3xl font-bold text-zinc-100">My Shops</h1>
+              <p className="text-zinc-400 mt-1">Manage your coffee loyalty programs</p>
+            </div>
+            <Link
+              href="/setup"
+              className="btn-amber px-6 py-2.5 rounded-lg flex items-center gap-2"
+            >
+              + Create New
+            </Link>
+          </div>
+        </div>
+
+        {/* Content */}
+        <div className="max-w-6xl mx-auto px-4 py-12">
         {shops.length === 0 ? (
           <div className="text-center py-20">
             <div className="text-5xl mb-4">📍</div>
@@ -158,7 +164,8 @@ export default function MyShopsPage() {
             ))}
           </div>
         )}
-      </div>
+        </div>
+      </main>
     </div>
   );
 }

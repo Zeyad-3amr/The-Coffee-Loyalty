@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { validateEgyptPhoneNumber, formatPhoneNumber } from '@/app/lib/utils';
 import { ErrorDisplay } from '@/app/components/ErrorDisplay';
+import { Sidebar } from '@/app/components/Sidebar';
 
 interface AdminPageProps {
   params: {
@@ -130,28 +131,33 @@ export default function AdminPage({ params }: AdminPageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-950">
-      {/* Header */}
-      <div className="border-b border-zinc-800">
-        <div className="max-w-6xl mx-auto px-6 py-8 flex justify-between items-start">
-          <div>
-            <h1 className="text-3xl font-bold text-zinc-100 mb-1">
-              {adminData?.shop?.name}
-            </h1>
-            <p className="text-zinc-400 text-sm">Shop ID: {adminData?.shop?.id}</p>
-          </div>
-          <a
-            href={`/print-qr/${shopId}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-amber-600 hover:bg-amber-700 text-white font-medium py-2 px-4 rounded-lg transition"
-          >
-            Print QR Code
-          </a>
-        </div>
-      </div>
+    <div className="flex min-h-screen bg-zinc-950">
+      {/* Sidebar */}
+      <Sidebar shopId={shopId} shopName={adminData?.shop?.name} />
 
-      <div className="max-w-6xl mx-auto px-6 py-8 space-y-8">
+      {/* Main Content */}
+      <main className="flex-1 overflow-auto">
+        {/* Header */}
+        <div className="border-b border-zinc-800">
+          <div className="max-w-6xl mx-auto px-6 py-8 flex justify-between items-start">
+            <div>
+              <h1 className="text-3xl font-bold text-zinc-100 mb-1">
+                {adminData?.shop?.name}
+              </h1>
+              <p className="text-zinc-400 text-sm">Shop ID: {adminData?.shop?.id}</p>
+            </div>
+            <a
+              href={`/print-qr/${shopId}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="bg-amber-600 hover:bg-amber-700 text-white font-medium py-2 px-4 rounded-lg transition"
+            >
+              Print QR Code
+            </a>
+          </div>
+        </div>
+
+        <div className="max-w-6xl mx-auto px-6 py-8 space-y-8">
         {/* Statistics Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="bg-zinc-900 rounded-lg p-6 border border-zinc-800">
@@ -275,7 +281,8 @@ export default function AdminPage({ params }: AdminPageProps) {
             </table>
           </div>
         </div>
-      </div>
+        </div>
+      </main>
     </div>
   );
 }
