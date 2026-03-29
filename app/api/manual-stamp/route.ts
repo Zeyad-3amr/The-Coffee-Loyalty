@@ -52,8 +52,8 @@ export async function POST(request: NextRequest) {
     let customerId: string;
     if (customerResult.rows.length === 0) {
       const newCustomer = await client.query(
-        'INSERT INTO "Customer" ("phoneNumber", "createdAt") VALUES ($1, NOW()) RETURNING id',
-        [phoneNumber]
+        'INSERT INTO "Customer" (id, "phoneNumber", "createdAt") VALUES ($1, $2, NOW()) RETURNING id',
+        [nanoid(), phoneNumber]
       );
       customerId = newCustomer.rows[0].id;
     } else {
