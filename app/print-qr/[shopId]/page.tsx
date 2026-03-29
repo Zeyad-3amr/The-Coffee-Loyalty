@@ -51,10 +51,10 @@ export default function PrintQRPage({ params }: PrintPageProps) {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-zinc-950">
+      <div className="flex-1 flex items-center justify-center min-h-[50vh]">
         <div className="text-center">
-          <div className="text-4xl mb-4 animate-bounce">☕</div>
-          <p className="text-zinc-400">Loading...</p>
+          <div className="text-5xl mb-6 animate-bounce drop-shadow-[0_0_15px_rgba(251,191,36,0.5)]">☕</div>
+          <p className="text-stone-400 text-lg font-medium animate-pulse">Loading poster...</p>
         </div>
       </div>
     );
@@ -62,13 +62,16 @@ export default function PrintQRPage({ params }: PrintPageProps) {
 
   if (error || !shopData) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-zinc-950 px-4">
-        <div className="bg-zinc-900 rounded-lg p-8 max-w-md text-center border border-zinc-800">
-          <h2 className="text-2xl font-bold text-zinc-100 mb-4">Error</h2>
-          <p className="text-zinc-400 mb-6">{error || 'Shop not found'}</p>
+      <div className="flex-1 flex flex-col items-center justify-center px-6">
+        <div className="glass-card p-10 max-w-md w-full text-center border border-red-500/20 shadow-[0_0_30px_rgba(239,68,68,0.1)]">
+          <div className="w-16 h-16 bg-red-500/10 rounded-full mx-auto flex items-center justify-center text-3xl mb-6 border border-red-500/20 text-red-500">
+            ⚠️
+          </div>
+          <h2 className="text-3xl font-bold text-stone-100 mb-4 tracking-tight">Error</h2>
+          <p className="text-stone-400 mb-8 font-medium">{error || 'Shop not found'}</p>
           <a
             href="/"
-            className="inline-block bg-amber-600 hover:bg-amber-700 text-white font-medium py-2 px-6 rounded-lg transition"
+            className="w-full inline-block btn-amber py-4 rounded-xl shadow-lg"
           >
             Back to Home
           </a>
@@ -80,73 +83,90 @@ export default function PrintQRPage({ params }: PrintPageProps) {
   const scanUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}/scan/${shopData.qrCode}`;
 
   return (
-    <div className="min-h-screen bg-zinc-950">
+    <div className="flex-1 flex flex-col w-full relative">
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-amber-500/10 blur-[150px] rounded-full pointer-events-none print:hidden" />
+
       {/* Non-print content: Header and buttons */}
-      <div className="print:hidden border-b border-zinc-800 p-4">
-        <div className="max-w-4xl mx-auto flex justify-between items-center">
-          <div>
-            <h1 className="text-2xl font-bold text-zinc-100">{shopData.name}</h1>
-            <p className="text-zinc-400 text-sm">Print QR Code for Customers</p>
+      <div className="print:hidden border-b border-white/5 p-6 bg-stone-950/50 backdrop-blur-sm z-10 w-full sticky top-0">
+        <div className="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+          <div className="text-center sm:text-left">
+            <h1 className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-stone-100 to-stone-400 tracking-tight">{shopData.name}</h1>
+            <p className="text-amber-500 text-sm font-semibold tracking-wide uppercase mt-1">Print QR Poster</p>
           </div>
           <button
             onClick={handlePrint}
-            className="bg-amber-600 hover:bg-amber-700 text-white font-medium py-2 px-6 rounded-lg transition"
+            className="btn-amber shadow-lg shadow-amber-500/20 py-3 px-8 rounded-xl font-bold whitespace-nowrap w-full sm:w-auto"
           >
-            Print
+            Print Poster
           </button>
         </div>
       </div>
 
-      {/* Printable content - stays white for printing */}
-      <div className="w-full h-screen flex items-center justify-center p-4 print:p-0 print:bg-white">
+      {/* Printable content - stays white for printing, styled nicer to be premium on screen too */}
+      <div className="w-full flex-1 flex flex-col items-center justify-center p-8 print:p-0 print:bg-white relative z-10">
+        
+        <div className="mb-8 text-center print:hidden max-w-md animate-fadeUp">
+          <p className="text-stone-400 text-lg">Below is a preview of the print layout. Best printed on <span className="text-stone-200 font-bold">A4 size paper</span> in portrait mode.</p>
+        </div>
+
         <div
           ref={qrRef}
-          className="bg-white print:bg-white p-12 print:p-0 flex flex-col items-center justify-center max-w-2xl"
+          className="bg-white print:bg-white p-16 print:p-0 flex flex-col items-center justify-center max-w-[210mm] min-h-[297mm] shadow-2xl print:shadow-none border border-stone-800 print:border-none rounded-xl print:rounded-none w-full animate-fadeUp stagger-delay-1 mx-auto"
+          style={{ width: '100%', maxWidth: '210mm', minHeight: '800px' }}
         >
-          {/* Title */}
-          <h1 className="text-4xl font-bold text-gray-900 print:text-gray-900 mb-1 text-center">
-            {shopData.name}
-          </h1>
-          <p className="text-lg text-gray-600 print:text-gray-600 mb-8 text-center">
-            Loyalty Program
-          </p>
+          {/* Title Segment */}
+          <div className="w-full text-center mb-10 border-b-4 border-black pb-8">
+            <div className="mx-auto w-24 h-24 bg-black rounded-full flex items-center justify-center text-white text-5xl mb-6 print:bg-black">
+              ☕
+            </div>
+            <h1 className="text-5xl font-black text-black print:text-black mb-3 tracking-tighter uppercase">
+              {shopData.name}
+            </h1>
+            <p className="text-2xl text-gray-800 print:text-gray-800 tracking-widest uppercase font-semibold">
+              Premium Loyalty Rewards
+            </p>
+          </div>
 
-          {/* QR Code */}
-          <div className="bg-white print:bg-white p-8 border border-gray-300 print:border-gray-300 rounded-lg mb-8">
+          {/* QR Code Segment */}
+          <div className="bg-white print:bg-white p-6 border-[8px] border-black rounded-3xl mb-12 transform scale-100 print:scale-100 flex items-center justify-center">
             <QRCodeSVG
               value={scanUrl}
-              size={400}
+              size={360}
               level="H"
-              includeMargin
+              includeMargin={false}
               fgColor="#000000"
               bgColor="#ffffff"
             />
           </div>
 
-          {/* Instructions */}
-          <div className="text-center max-w-md">
-            <p className="text-lg font-semibold text-gray-900 print:text-gray-900 mb-4">
-              Scan to Collect Stamps
-            </p>
-            <div className="space-y-3 text-sm text-gray-700 print:text-gray-700">
-              <p>
-                <strong>1.</strong> Customer scans with their phone
+          {/* Instructions Segment */}
+          <div className="text-center max-w-md mx-auto w-full">
+            <div className="bg-black text-white py-3 px-8 rounded-full mb-8 inline-block shadow-lg">
+              <p className="text-2xl font-black uppercase tracking-wider">
+                Scan to Collect Stamps
               </p>
-              <p>
-                <strong>2.</strong> Enter phone number
+            </div>
+            
+            <div className="space-y-5 text-xl text-gray-900 print:text-gray-900 font-medium text-left bg-gray-50 border-2 border-gray-200 p-8 rounded-2xl w-full mx-auto">
+              <p className="flex items-center gap-4">
+                <span className="bg-black text-white w-8 h-8 rounded-full flex items-center justify-center font-bold font-mono">1</span> 
+                Scan this code with your phone
               </p>
-              <p>
-                <strong>3.</strong> Get a digital stamp
+              <p className="flex items-center gap-4">
+                <span className="bg-black text-white w-8 h-8 rounded-full flex items-center justify-center font-bold font-mono">2</span> 
+                Enter your phone number
               </p>
-              <p>
-                <strong>4.</strong> 10 stamps = 1 free coffee
+              <p className="flex items-center gap-4 text-2xl font-black mt-6 border-t border-gray-300 pt-6 border-dashed">
+                <span className="text-4xl">☕</span> 
+                10 stamps = <span className="underline decoration-4 decoration-black">Free Coffee</span>!
               </p>
             </div>
           </div>
 
-          {/* Footer */}
-          <div className="mt-12 pt-8 border-t border-gray-300 print:border-gray-300 text-center text-sm text-gray-600 print:text-gray-600 w-full">
-            <p>No app needed • Instant stamps</p>
+          {/* Footer Segment */}
+          <div className="mt-16 pt-8 text-center text-gray-500 print:text-gray-500 w-full border-t-2 border-dashed border-gray-300">
+            <p className="font-bold tracking-widest uppercase mb-1">Powered by Brew</p>
+            <p className="text-sm">No app required • Instant secure stamps</p>
           </div>
         </div>
       </div>
@@ -154,14 +174,29 @@ export default function PrintQRPage({ params }: PrintPageProps) {
       {/* Print styles */}
       <style>{`
         @media print {
+          @page {
+            size: A4 portrait;
+            margin: 0;
+          }
           body {
             margin: 0;
             padding: 0;
-            background: white;
+            background: white !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+          }
+          
+          /* Hide global navbar when printing */
+          nav {
+            display: none !important;
+          }
+          
+          main {
+            padding: 0 !important;
+            margin: 0 !important;
           }
 
-          html,
-          body {
+          html, body {
             height: 100%;
             width: 100%;
           }

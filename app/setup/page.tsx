@@ -102,22 +102,27 @@ export default function SetupPage() {
 
   if (pageState === 'input') {
     return (
-      <div className="min-h-screen bg-zinc-950 px-4 py-12">
-        <div className="max-w-md mx-auto">
-          {/* Back Link */}
-          <Link href="/" className="text-zinc-400 hover:text-amber-400 text-sm mb-8 inline-block">
-            ← Back
+      <div className="flex-1 w-full max-w-lg mx-auto px-6 py-20 relative">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-amber-500/10 blur-[150px] rounded-full pointer-events-none" />
+        
+        <div className="relative z-10">
+          <Link href="/" className="group inline-flex items-center gap-2 text-stone-400 hover:text-amber-400 font-medium mb-12 transition-colors">
+            <span className="group-hover:-translate-x-1 transition-transform">←</span> Back Home
           </Link>
 
-          <div className="text-center mb-8 animate-fadeUp">
-            <div className="text-5xl mb-3">☕</div>
-            <h1 className="text-4xl font-bold text-zinc-100 mb-2">Create Your Shop</h1>
-            <p className="text-zinc-400">Get your unique QR code to start collecting stamps</p>
+          <div className="text-center mb-10 animate-fadeUp">
+            <div className="w-20 h-20 bg-stone-900 border border-white/5 rounded-3xl mx-auto flex items-center justify-center text-4xl mb-6 shadow-inner shadow-black/50">
+              ☕
+            </div>
+            <h1 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-stone-100 to-stone-400 mb-3 tracking-tight">Create Your Shop</h1>
+            <p className="text-stone-400 text-lg">Set up your premium loyalty program in seconds</p>
           </div>
 
-          <div className="card-dark p-8 space-y-4 animate-fadeUp stagger-delay-1">
-            <div>
-              <label className="block text-sm font-medium text-zinc-300 mb-2">
+          <div className="glass-card p-10 animate-fadeUp stagger-delay-1 relative overflow-visible">
+            <div className="absolute -top-3 -right-3 w-20 h-20 bg-amber-500/20 blur-2xl rounded-full" />
+            
+            <div className="relative z-10">
+              <label className="block text-sm font-bold text-stone-300 mb-3 ml-1 uppercase tracking-wider">
                 Shop Name
               </label>
               <input
@@ -127,26 +132,36 @@ export default function SetupPage() {
                   setShopName(e.target.value);
                   setShopNameError('');
                 }}
-                placeholder="Downtown Coffee"
+                placeholder="e.g. Downtown Coffee Roasters"
                 maxLength={50}
-                className={`w-full px-4 py-3 bg-zinc-800 border rounded-lg text-zinc-100 placeholder-zinc-500 focus:outline-none focus:ring-2 transition ${
+                className={`w-full px-5 py-4 bg-stone-950 border rounded-xl text-stone-100 placeholder-stone-600 focus:outline-none focus:ring-2 transition shadow-inner font-medium text-lg ${
                   shopNameError
-                    ? 'border-red-500 focus:ring-red-500'
-                    : 'border-zinc-700 focus:ring-amber-500'
+                    ? 'border-red-500/50 focus:ring-red-500/50'
+                    : 'border-white/10 focus:ring-amber-500/50 focus:border-amber-500/50'
                 }`}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && shopName.trim() && !isSubmitting) {
+                    handleCreateShop();
+                  }
+                }}
               />
               {shopNameError && (
-                <p className="text-red-400 text-sm mt-2">{shopNameError}</p>
+                <p className="text-red-400 text-sm mt-3 ml-1 font-medium bg-red-400/10 inline-block px-3 py-1 rounded-lg border border-red-400/20">{shopNameError}</p>
               )}
-            </div>
 
-            <button
-              onClick={handleCreateShop}
-              disabled={!shopName.trim() || isSubmitting}
-              className="w-full btn-amber py-3 rounded-lg font-medium disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {isSubmitting ? 'Creating Shop...' : 'Create Shop'}
-            </button>
+              <button
+                onClick={handleCreateShop}
+                disabled={!shopName.trim() || isSubmitting}
+                className="w-full btn-amber py-4 rounded-xl text-lg mt-8 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 shadow-xl shadow-amber-500/20"
+              >
+                {isSubmitting ? (
+                  <span className="flex items-center justify-center gap-3">
+                    <span className="w-5 h-5 border-2 border-stone-950/20 border-t-stone-950 rounded-full animate-spin" />
+                    Creating...
+                  </span>
+                ) : 'Create Shop'}
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -155,10 +170,10 @@ export default function SetupPage() {
 
   if (pageState === 'loading') {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-zinc-950">
+      <div className="flex-1 flex items-center justify-center min-h-[60vh]">
         <div className="text-center">
-          <div className="text-4xl mb-4 animate-bounce">☕</div>
-          <p className="text-zinc-400">Creating your shop...</p>
+          <div className="text-6xl mb-6 animate-bounce drop-shadow-[0_0_20px_rgba(251,191,36,0.5)]">☕</div>
+          <p className="text-stone-400 text-xl font-medium animate-pulse">Brewing your digital shop...</p>
         </div>
       </div>
     );
@@ -172,40 +187,46 @@ export default function SetupPage() {
     const scanUrl = `${typeof window !== 'undefined' ? window.location.origin : ''}/scan/${qrCode}`;
 
     return (
-      <div className="min-h-screen bg-zinc-950 px-4 py-12">
-        <div className="max-w-md mx-auto">
+      <div className="flex-1 w-full max-w-lg mx-auto px-6 py-20 relative">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-amber-500/10 blur-[150px] rounded-full pointer-events-none" />
+        
+        <div className="relative z-10">
           {/* Success Header */}
-          <div className="text-center mb-8 animate-fadeUp">
-            <div className="text-5xl mb-3">✨</div>
-            <h1 className="text-4xl font-bold text-zinc-100 mb-2">Shop Created!</h1>
-            <p className="text-zinc-400">{displayName}</p>
+          <div className="text-center mb-10 animate-fadeUp">
+            <div className="w-24 h-24 bg-gradient-to-br from-amber-400 to-amber-600 rounded-full mx-auto flex items-center justify-center text-4xl mb-6 shadow-xl shadow-amber-500/40 border-4 border-stone-900 drop-shadow-2xl">
+              ✨
+            </div>
+            <h1 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-stone-100 to-stone-400 mb-3 tracking-tight">Shop Created!</h1>
+            <p className="text-amber-400 font-medium text-xl">{displayName}</p>
           </div>
 
           {/* QR Code Section */}
-          <div className="card-dark p-8 mb-6 animate-fadeUp stagger-delay-1">
-            <div className="text-center mb-4">
-              <h3 className="text-lg font-semibold text-zinc-100 mb-6">
+          <div className="glass-card p-10 mb-8 animate-fadeUp stagger-delay-1 relative overflow-hidden group">
+            <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-amber-600 to-amber-400 opacity-50" />
+            
+            <div className="text-center mb-8">
+              <h3 className="text-lg font-bold text-stone-300 uppercase tracking-widest mb-8">
                 Customer Scan Code
               </h3>
               <div
                 ref={qrRef}
-                className="bg-white p-4 rounded-lg inline-block border border-zinc-700"
+                className="bg-white p-6 rounded-3xl inline-block border-[8px] border-stone-900 shadow-2xl group-hover:scale-105 transition-transform duration-500"
               >
                 <QRCodeSVG
                   value={scanUrl}
-                  size={300}
+                  size={240}
                   level="H"
-                  includeMargin
+                  includeMargin={false}
                   fgColor="#000000"
                   bgColor="#ffffff"
                 />
               </div>
             </div>
 
-            <div className="mt-6 space-y-2">
+            <div className="space-y-3">
               <button
                 onClick={handleDownloadQR}
-                className="w-full btn-amber py-3 rounded-lg font-medium"
+                className="w-full btn-amber py-4 rounded-xl text-lg shadow-lg"
               >
                 Download QR Code
               </button>
@@ -213,22 +234,22 @@ export default function SetupPage() {
                 href={`/print-qr/${shopId}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full border border-zinc-700 text-zinc-300 font-medium py-3 rounded-lg transition hover:border-amber-500/50 hover:text-amber-400 flex items-center justify-center"
+                className="w-full bg-stone-900 hover:bg-stone-800 text-stone-300 font-semibold py-4 rounded-xl transition flex items-center justify-center border border-white/10 hover:border-amber-500/30"
               >
-                View Printable QR Code
+                View Printable Poster
               </a>
             </div>
           </div>
 
           {/* Admin Access Section */}
-          <div className="card-dark p-6 mb-4 animate-fadeUp stagger-delay-2">
-            <h3 className="text-lg font-semibold text-zinc-100 mb-3">Admin Dashboard</h3>
-            <p className="text-sm text-zinc-400 mb-4">
-              View customers and manage stamps
+          <div className="glass-card p-8 mb-6 animate-fadeUp stagger-delay-2">
+            <h3 className="text-xl font-bold text-stone-100 mb-2">Admin Dashboard</h3>
+            <p className="text-stone-400 mb-6 leading-relaxed">
+              Track customer visits, manage your stamps, and monitor growth.
             </p>
             <button
               onClick={handleGoToAdmin}
-              className="w-full btn-amber py-3 rounded-lg font-medium"
+              className="w-full bg-stone-100 hover:bg-white text-stone-950 font-bold py-4 rounded-xl transition-all hover:scale-[1.02] shadow-lg"
             >
               Go to Dashboard
             </button>
@@ -237,14 +258,15 @@ export default function SetupPage() {
           {/* My Shops Link */}
           <Link
             href="/my-shops"
-            className="w-full border border-zinc-700 text-zinc-300 font-medium py-3 rounded-lg transition hover:border-amber-500/50 hover:text-amber-400 flex items-center justify-center mb-4 animate-fadeUp stagger-delay-3"
+            className="w-full text-stone-400 hover:text-amber-400 font-medium py-3 transition flex items-center justify-center mb-6 animate-fadeUp stagger-delay-3 group"
           >
-            View All My Shops →
+            Switch to All My Shops <span className="ml-2 group-hover:translate-x-1 transition-transform">→</span>
           </Link>
 
           {/* Info Section */}
-          <div className="bg-amber-500/10 p-4 rounded-lg border border-amber-500/30 text-sm text-zinc-300 text-center animate-fadeUp stagger-delay-4">
-            Save your admin URL: <code className="bg-zinc-900 px-2 py-1 rounded font-mono text-xs text-amber-400 mt-2 block">/admin/{shopId}</code>
+          <div className="bg-amber-500/10 p-5 rounded-xl border border-amber-500/20 text-sm text-stone-300 text-center animate-fadeUp stagger-delay-4 shadow-inner">
+            <span className="opacity-80">Save your admin URL securely:</span>
+            <code className="bg-stone-950/50 px-3 py-1.5 rounded-lg font-mono text-xs text-amber-400 mt-3 block border border-amber-500/10">/admin/{shopId}</code>
           </div>
         </div>
       </div>

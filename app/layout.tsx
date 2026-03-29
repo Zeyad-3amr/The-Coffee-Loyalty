@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import { Navbar } from "./components/Navbar";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -14,8 +15,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Coffee Loyalty - Digital Stamp Card",
-  description: "Digital loyalty program for coffee shops. Customers scan QR codes to collect stamps and earn free coffee.",
+  title: "Brew | Premium Digital Coffee Loyalty",
+  description: "Digital loyalty program for independent coffee shops. Premium experience, no apps required.",
   viewport: {
     width: "device-width",
     initialScale: 1,
@@ -31,9 +32,15 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-zinc-950 text-zinc-100`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-stone-950 text-stone-100 min-h-screen flex flex-col pt-20`}
       >
-        {children}
+        <Navbar />
+        <main className="flex-1 flex flex-col relative">
+          <div className="absolute top-0 inset-x-0 h-96 bg-gradient-to-b from-amber-500/10 to-transparent pointer-events-none" />
+          <div className="relative z-10 flex-1">
+            {children}
+          </div>
+        </main>
       </body>
     </html>
   );
