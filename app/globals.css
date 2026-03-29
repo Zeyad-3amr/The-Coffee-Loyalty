@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 :root {
-  --background: #0c0a09;
-  --foreground: #fafaf9;
+  --background: #09090b; /* zinc-950 */
+  --foreground: #fafafa; /* zinc-50 */
 }
 
 html {
@@ -12,7 +12,7 @@ html {
 }
 
 body {
-  @apply bg-stone-950 text-stone-100;
+  @apply bg-zinc-950 text-zinc-300;
   font-family: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, sans-serif;
 }
 
@@ -21,53 +21,37 @@ body {
     text-wrap: balance;
   }
 
-  .glow-amber {
-    @apply shadow-[0_0_30px_-5px_rgba(245,158,11,0.4)];
-  }
-
+  /* Simplified Card */
   .glass-card {
-    @apply bg-stone-900/40 backdrop-blur-xl border border-white/10 rounded-2xl shadow-xl shadow-black/50 overflow-hidden;
+    @apply bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden;
   }
 
   .glass-card-hover {
-    @apply hover:border-amber-500/30 hover:bg-stone-900/60 transition-all duration-300 hover:shadow-2xl hover:shadow-amber-500/10 hover:-translate-y-1;
+    @apply bg-zinc-900 border border-zinc-800 hover:border-zinc-700 hover:bg-zinc-800/80 transition-colors duration-200 rounded-xl overflow-hidden;
   }
 
   .card-dark {
-    @apply glass-card; /* Aliasing for backward compatibility but with new style */
+    @apply glass-card; 
   }
 
+  /* Flat, simple primary button */
   .btn-amber {
-    @apply relative overflow-hidden bg-gradient-to-r from-amber-500 to-amber-400 text-stone-950 font-bold transition-all duration-300 hover:scale-105 shadow-lg shadow-amber-500/20 hover:shadow-amber-500/40;
-  }
-
-  .btn-amber::after {
-    content: '';
-    @apply absolute inset-0 bg-white/20 translate-y-full transition-transform duration-300;
-  }
-
-  .btn-amber:hover::after {
-    @apply translate-y-0;
+    @apply bg-amber-600 hover:bg-amber-500 text-zinc-50 font-medium py-3 px-6 rounded-lg transition-colors duration-200 inline-flex items-center justify-center text-center;
   }
 
   .btn-amber-outlined {
-    @apply border border-amber-500/50 text-amber-400 hover:bg-amber-500/10 relative overflow-hidden font-bold transition-all duration-300 hover:border-amber-400 hover:shadow-[0_0_20px_rgba(251,191,36,0.2)];
+    @apply border border-amber-600/50 text-amber-500 hover:bg-amber-600/10 font-medium py-3 px-6 rounded-lg transition-colors duration-200 inline-flex items-center justify-center text-center;
   }
 
+  /* Remove intense fadeups for comfortable reading */
   .animate-fadeUp {
-    animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: fade 0.4s ease-out forwards;
     opacity: 0;
   }
 
-  @keyframes fadeUp {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  @keyframes fade {
+    from { opacity: 0; }
+    to { opacity: 1; }
   }
 
   .stagger-delay-1 { animation-delay: 0.1s; }

@@ -18,21 +18,21 @@ export function Navbar() {
 
   return (
     <nav
-      className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 pointer-events-auto ${
+      className={`fixed top-0 inset-x-0 z-50 transition-colors duration-200 ${
         scrolled 
-          ? 'bg-stone-950/80 backdrop-blur-md border-b border-white/5 py-3' 
-          : 'bg-transparent py-5'
+          ? 'bg-zinc-950/90 backdrop-blur-md border-b border-zinc-800' 
+          : 'bg-zinc-950 border-b border-transparent'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
         <Link 
           href="/" 
-          className="group flex items-center gap-3 transition-transform hover:scale-105 duration-300"
+          className="flex items-center gap-3 transition-opacity hover:opacity-80"
         >
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-600 to-amber-300 flex items-center justify-center text-stone-950 font-black text-xl shadow-lg shadow-amber-500/20 group-hover:shadow-amber-500/40 transition-shadow">
+          <div className="text-2xl">
             ☕
           </div>
-          <span className="text-2xl font-black bg-clip-text text-transparent bg-gradient-to-r from-stone-100 to-stone-400 tracking-tight">
+          <span className="text-xl font-bold text-zinc-100 tracking-tight">
             Brew
           </span>
         </Link>
@@ -44,11 +44,9 @@ export function Navbar() {
           </div>
           <Link
             href="/setup"
-            className="group relative px-6 py-2.5 rounded-full font-semibold overflow-hidden"
+            className="px-5 py-2 rounded-md bg-amber-600 hover:bg-amber-500 text-zinc-50 font-medium transition-colors"
           >
-            <div className="absolute inset-0 bg-gradient-to-r from-amber-500 to-amber-300 transition-transform group-hover:scale-105" />
-            <div className="absolute inset-0 bg-amber-400 opacity-0 group-hover:opacity-20 transition-opacity blur" />
-            <span className="relative text-stone-950">Create Shop</span>
+            Create Shop
           </Link>
         </div>
       </div>
@@ -60,14 +58,12 @@ function NavLink({ href, active, children }: { href: string; active: boolean; ch
   return (
     <Link 
       href={href} 
-      className={`text-sm font-medium transition-colors hover:text-amber-400 relative ${
-        active ? 'text-amber-400' : 'text-stone-400'
+      className={`text-sm font-medium transition-colors ${
+        active ? 'text-zinc-100' : 'text-zinc-400 hover:text-zinc-200'
       }`}
     >
       {children}
-      {active && (
-        <span className="absolute -bottom-1.5 left-0 right-0 h-0.5 bg-amber-400 rounded-full shadow-[0_0_8px_rgba(251,191,36,0.8)]" />
-      )}
     </Link>
   );
 }
+

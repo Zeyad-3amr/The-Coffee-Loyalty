@@ -6,11 +6,11 @@ export default function ScanPage() {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-amber-500/10 blur-[150px] rounded-full pointer-events-none" />
       
       <div className="w-full max-w-md text-center animate-fadeUp relative z-10 glass-card p-10 shadow-2xl">
-        <div className="w-20 h-20 bg-stone-900 rounded-3xl mx-auto flex items-center justify-center text-5xl mb-6 shadow-inner border border-white/5">
+        <div className="w-20 h-20 bg-zinc-900 rounded-3xl mx-auto flex items-center justify-center text-5xl mb-6 shadow-inner border border-white/5">
           📱
         </div>
-        <h1 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-stone-100 to-stone-400 mb-4 tracking-tight">Scan QR Code</h1>
-        <p className="text-stone-400 mb-8 font-medium leading-relaxed">
+        <h1 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-zinc-100 to-zinc-400 mb-4 tracking-tight">Scan QR Code</h1>
+        <p className="text-zinc-400 mb-8 font-medium leading-relaxed">
           Open your phone's camera or QR code scanner and scan the QR code at your coffee shop counter.
         </p>
         
