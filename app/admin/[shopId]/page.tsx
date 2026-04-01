@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { validateEgyptPhoneNumber, formatPhoneNumber } from '@/app/lib/utils';
 import { ErrorDisplay } from '@/app/components/ErrorDisplay';
+import { supabase } from '@/app/lib/supabase-client';
 
 interface AdminPageProps {
   params: {
@@ -27,6 +28,7 @@ interface AdminData {
     id: string;
     name: string;
     qrCode: string;
+    logoUrl?: string | null;
   };
   customers?: Customer[];
   totals?: {
@@ -46,6 +48,8 @@ export default function AdminPage({ params }: AdminPageProps) {
   const [manualPhone, setManualPhone] = useState('');
   const [manualError, setManualError] = useState('');
   const [isAddingStamp, setIsAddingStamp] = useState(false);
+  const [isUploadingLogo, setIsUploadingLogo] = useState(false);
+  const [logoError, setLogoError] = useState('');
 
   useEffect(() => {
     fetchAdminData();
@@ -111,6 +115,52 @@ export default function AdminPage({ params }: AdminPageProps) {
     }
   };
 
+  const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 2 * 1024 * 1024) {
+      setLogoError('File too large. Max 2MB.');
+      return;
+    }
+
+    setIsUploadingLogo(true);
+    setLogoError('');
+
+    try {
+      const ext = file.name.split('.').pop();
+      const path = `${shopId}/logo.${ext}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('shop-logos')
+        .upload(path, file, { upsert: true, contentType: file.type });
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('shop-logos')
+        .getPublicUrl(path);
+
+      const res = await fetch(`/api/shop/${shopId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ logoUrl: publicUrl }),
+      });
+
+      if (!res.ok) throw new Error('Failed to save logo URL');
+
+      setAdminData(prev => prev ? {
+        ...prev,
+        shop: prev.shop ? { ...prev.shop, logoUrl: publicUrl } : prev.shop,
+      } : prev);
+    } catch (err: any) {
+      console.error('Logo upload error:', err);
+      setLogoError(err.message || 'Upload failed. Make sure the shop-logos bucket exists in Supabase Storage.');
+    } finally {
+      setIsUploadingLogo(false);
+    }
+  };
+
   if (pageState === 'loading') {
     return (
       <div className="flex-1 flex items-center justify-center min-h-[50vh]">
@@ -162,6 +212,39 @@ export default function AdminPage({ params }: AdminPageProps) {
         </div>
 
         <div className="space-y-6 animate-fadeUp">
+          {/* Shop Logo */}
+          <div className="glass-card p-6 bg-gradient-to-br from-stone-900/50 to-stone-900/10">
+            <h2 className="text-lg font-bold text-stone-100 mb-1">Shop Logo</h2>
+            <p className="text-stone-400 text-sm mb-5">Upload your logo to personalize your dashboard and QR poster.</p>
+            <div className="flex items-center gap-6">
+              <div className="w-20 h-20 rounded-xl bg-stone-900 border border-white/10 flex items-center justify-center overflow-hidden flex-shrink-0 shadow-inner">
+                {adminData?.shop?.logoUrl ? (
+                  <img src={adminData.shop.logoUrl} alt="Shop logo" className="w-full h-full object-contain p-1" />
+                ) : (
+                  <span className="text-3xl">🏪</span>
+                )}
+              </div>
+              <div className="flex-1">
+                <label
+                  className={`btn-amber px-5 py-2.5 rounded-lg text-sm inline-block cursor-pointer ${
+                    isUploadingLogo ? 'opacity-50 pointer-events-none' : ''
+                  }`}
+                >
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="sr-only"
+                    onChange={handleLogoUpload}
+                    disabled={isUploadingLogo}
+                  />
+                  {isUploadingLogo ? 'Uploading...' : adminData?.shop?.logoUrl ? 'Change Logo' : 'Upload Logo'}
+                </label>
+                {logoError && <p className="text-red-400 text-xs mt-2 font-medium">{logoError}</p>}
+                <p className="text-stone-500 text-xs mt-2">PNG, JPG, SVG · Max 2MB</p>
+              </div>
+            </div>
+          </div>
+
           {/* Statistics Cards */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div className="glass-card-hover p-6 relative overflow-hidden group">

@@ -10,7 +10,7 @@ export async function GET(
 
     // Find shop
     const shopResult = await query(
-      'SELECT id, name, "qrCode" FROM "Shop" WHERE id = $1',
+      'SELECT id, name, "qrCode", "logoUrl" FROM "Shop" WHERE id = $1',
       [shopId]
     );
 

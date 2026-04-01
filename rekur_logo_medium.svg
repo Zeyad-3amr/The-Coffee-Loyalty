@@ -1,0 +1,14 @@
+<svg width="110" height="110" viewBox="0 0 110 110" xmlns="http://www.w3.org/2000/svg">
+  <rect x="0" y="0" width="110" height="110" rx="26" fill="#0a0a0a"/>
+  <rect x="10" y="22" width="90" height="42" rx="10" fill="#140e00"/>
+  <rect x="10" y="22" width="90" height="42" rx="10" fill="none" stroke="#d97706" stroke-width="1.5" opacity="0.5"/>
+  <text x="28" y="50" font-family="Arial" font-weight="700" font-size="20px" letter-spacing="-1px" fill="#fbbf24">re</text>
+  <text x="52" y="50" font-family="Arial" font-weight="700" font-size="20px" letter-spacing="-1px" fill="#d97706">kur</text>
+  <circle cx="22" cy="80" r="7" fill="#141414"/>
+  <circle cx="36" cy="80" r="7" fill="#141414"/>
+  <circle cx="50" cy="80" r="7" fill="#141414"/>
+  <circle cx="64" cy="80" r="7" fill="#141414"/>
+  <circle cx="78" cy="80" r="7" fill="#141414"/>
+  <circle cx="94" cy="80" r="8" fill="#fbbf24"/>
+  <path d="M90 80 L93 84 L99 75" fill="none" stroke="#0a0a0a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

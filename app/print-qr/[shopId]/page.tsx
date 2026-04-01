@@ -13,6 +13,7 @@ interface ShopData {
   id: string;
   name: string;
   qrCode: string;
+  logoUrl?: string | null;
 }
 
 export default function PrintQRPage({ params }: PrintPageProps) {
@@ -116,9 +117,15 @@ export default function PrintQRPage({ params }: PrintPageProps) {
         >
           {/* Title Segment */}
           <div className="w-full text-center mb-10 border-b-4 border-black pb-8">
-            <div className="mx-auto w-24 h-24 bg-black rounded-full flex items-center justify-center text-white text-5xl mb-6 print:bg-black">
-              ☕
-            </div>
+            {shopData.logoUrl ? (
+              <div className="mx-auto w-24 h-24 rounded-full bg-white border-4 border-black overflow-hidden flex items-center justify-center mb-6">
+                <img src={shopData.logoUrl} alt="Shop logo" className="w-full h-full object-contain p-1" />
+              </div>
+            ) : (
+              <div className="mx-auto w-24 h-24 bg-black rounded-full flex items-center justify-center text-white text-5xl mb-6 print:bg-black">
+                ☕
+              </div>
+            )}
             <h1 className="text-5xl font-black text-black print:text-black mb-3 tracking-tighter uppercase">
               {shopData.name}
             </h1>
