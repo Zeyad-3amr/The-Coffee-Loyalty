@@ -1,25 +1,29 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { query } from '@/app/lib/db';
+import { getUserIdFromRequest } from '@/app/lib/auth-helpers';
 import { nanoid } from 'nanoid';
 
 export async function POST(request: NextRequest) {
+  const userId = await getUserIdFromRequest(request);
+  if (!userId) {
+    return NextResponse.json(
+      { error: 'Please sign in to create a shop' },
+      { status: 401 }
+    );
+  }
+
   try {
     const { shopName } = await request.json();
 
     if (!shopName || shopName.trim() === '') {
-      return NextResponse.json(
-        { error: 'Shop name is required' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Shop name is required' }, { status: 400 });
     }
 
-    // Generate unique QR code
     const qrCode = nanoid(12);
 
-    // Create shop
     const result = await query(
-      'INSERT INTO "Shop" (id, name, "qrCode", "createdAt") VALUES ($1, $2, $3, NOW()) RETURNING id, name, "qrCode"',
-      [nanoid(), shopName.trim(), qrCode]
+      'INSERT INTO "Shop" (id, name, "qrCode", "userId", "createdAt") VALUES ($1, $2, $3, $4, NOW()) RETURNING id, name, "qrCode"',
+      [nanoid(), shopName.trim(), qrCode, userId]
     );
 
     const shop = result.rows[0];
@@ -32,9 +36,6 @@ export async function POST(request: NextRequest) {
     });
   } catch (error) {
     console.error('Error in /api/setup:', error);
-    return NextResponse.json(
-      { error: 'Something went wrong, please try again' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Something went wrong, please try again' }, { status: 500 });
   }
 }

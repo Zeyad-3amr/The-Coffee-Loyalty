@@ -111,8 +111,8 @@ export default function PrintQRPage({ params }: PrintPageProps) {
 
         <div
           ref={qrRef}
-          className="bg-white print:bg-white p-16 print:p-0 flex flex-col items-center justify-center max-w-[210mm] min-h-[297mm] shadow-2xl print:shadow-none border border-stone-800 print:border-none rounded-xl print:rounded-none w-full animate-fadeUp stagger-delay-1 mx-auto"
-          style={{ width: '100%', maxWidth: '210mm', minHeight: '800px' }}
+          className="bg-white print:bg-white p-10 print:p-0 flex flex-col items-center justify-center shadow-2xl print:shadow-none border border-stone-800 print:border-none rounded-xl print:rounded-none w-full animate-fadeUp stagger-delay-1 mx-auto"
+          style={{ width: '100%', maxWidth: '170mm' }}
         >
           {/* Title Segment */}
           <div className="w-full text-center mb-10 border-b-4 border-black pb-8">
@@ -128,10 +128,10 @@ export default function PrintQRPage({ params }: PrintPageProps) {
           </div>
 
           {/* QR Code Segment */}
-          <div className="bg-white print:bg-white p-6 border-[8px] border-black rounded-3xl mb-12 transform scale-100 print:scale-100 flex items-center justify-center">
+          <div className="bg-white print:bg-white p-4 border-[6px] border-black rounded-2xl mb-8 flex items-center justify-center">
             <QRCodeSVG
               value={scanUrl}
-              size={360}
+              size={260}
               level="H"
               includeMargin={false}
               fgColor="#000000"

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import { validateEgyptPhoneNumber, formatPhoneNumber } from '@/app/lib/utils';
 import { ErrorDisplay } from '@/app/components/ErrorDisplay';
 
@@ -130,8 +131,23 @@ export default function AdminPage({ params }: AdminPageProps) {
   }
 
   return (
-    <div className="flex flex-1 w-full bg-stone-950 relative">
-      <div className="absolute top-40 left-0 w-[400px] h-[400px] bg-amber-500/5 blur-[150px] rounded-full pointer-events-none" />
+    <div className="flex flex-col w-full min-h-screen bg-stone-950">
+      {/* Mini Header */}
+      <div className="bg-stone-950/80 backdrop-blur-md border-b border-white/5 px-6 py-4 flex items-center justify-between sticky top-0 z-40">
+        <Link
+          href="/my-shops"
+          className="flex items-center gap-2 text-stone-400 hover:text-amber-400 transition text-sm font-semibold"
+        >
+          <span>←</span> My Shops
+        </Link>
+        <Link href="/" className="flex items-center gap-2">
+          <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-amber-600 to-amber-300 flex items-center justify-center text-stone-950 font-black text-sm">☕</div>
+          <span className="text-sm font-black text-stone-300">Brew</span>
+        </Link>
+      </div>
+
+      <div className="relative flex-1">
+        <div className="absolute top-20 left-0 w-[400px] h-[400px] bg-amber-500/5 blur-[150px] rounded-full pointer-events-none" />
 
       {/* Main Content */}
       <main className="flex-1 w-full max-w-7xl mx-auto px-6 py-10 z-10">
@@ -141,11 +157,6 @@ export default function AdminPage({ params }: AdminPageProps) {
               <h1 className="text-3xl lg:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-stone-100 to-stone-400 mb-1.5 tracking-tight">
                 {adminData?.shop?.name}
               </h1>
-              <div className="flex items-center gap-2">
-                <span className="bg-stone-900 border border-white/10 px-2.5 py-0.5 rounded-full text-xs font-mono text-amber-500 tracking-wider">
-                  ID: {adminData?.shop?.id}
-                </span>
-              </div>
             </div>
             <a
               href={`/print-qr/${shopId}`}
@@ -291,6 +302,7 @@ export default function AdminPage({ params }: AdminPageProps) {
           </div>
         </div>
       </main>
+      </div>
     </div>
   );
 }
