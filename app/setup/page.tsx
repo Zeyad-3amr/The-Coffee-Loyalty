@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ErrorDisplay } from '@/app/components/ErrorDisplay';
 import { supabase } from '@/app/lib/supabase-client';
+import { LoadingSpinner } from '@/app/components/LoadingSpinner';
 
 type PageState = 'loading' | 'input' | 'display' | 'error';
 
@@ -102,14 +103,7 @@ export default function SetupPage() {
   };
 
   if (pageState === 'loading') {
-    return (
-      <div className="flex-1 flex items-center justify-center min-h-[60vh]">
-        <div className="text-center">
-          <div className="text-6xl mb-6 animate-bounce drop-shadow-[0_0_20px_rgba(251,191,36,0.5)]">☕</div>
-          <p className="text-stone-400 text-xl font-medium animate-pulse">Loading...</p>
-        </div>
-      </div>
-    );
+    return <LoadingSpinner message="Loading..." />;
   }
 
   if (pageState === 'input') {

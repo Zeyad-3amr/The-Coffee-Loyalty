@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { validateEgyptPhoneNumber, formatPhoneNumber, isRewardExpired } from '@/app/lib/utils';
 import { ErrorDisplay } from '@/app/components/ErrorDisplay';
+import { LoadingSpinner } from '@/app/components/LoadingSpinner';
 
 interface ScanPageProps {
   params: {
@@ -193,14 +194,7 @@ export default function ScanPage({ params }: ScanPageProps) {
   }
 
   if (pageState === 'loading') {
-    return (
-      <div className="flex-1 flex flex-col items-center justify-center min-h-[50vh]">
-        <div className="text-center animate-fadeUp">
-          <div className="text-6xl mb-6 animate-bounce drop-shadow-[0_0_20px_rgba(251,191,36,0.5)]">☕</div>
-          <p className="text-stone-400 text-xl font-medium animate-pulse">Adding your stamp...</p>
-        </div>
-      </div>
-    );
+    return <LoadingSpinner message="Adding your stamp..." />;
   }
 
   if (pageState === 'success') {

@@ -9,7 +9,10 @@ export default function Home() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-amber-500/20 blur-[120px] rounded-full pointer-events-none" />
         
         <div className="relative z-10 max-w-3xl mx-auto text-center mb-28">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card border-amber-500/20 text-amber-400 text-sm font-medium mb-8 animate-fadeUp">
+          <div className="flex justify-center mb-8 animate-fadeUp">
+            <img src="/logo-primary.svg" alt="Rekur" className="h-28 w-28 drop-shadow-[0_0_30px_rgba(251,191,36,0.3)]" />
+          </div>
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-card border-amber-500/20 text-amber-400 text-sm font-medium mb-8 animate-fadeUp stagger-delay-1">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
+import { LoadingSpinner } from '@/app/components/LoadingSpinner';
 
 interface PrintPageProps {
   params: {
@@ -51,14 +52,7 @@ export default function PrintQRPage({ params }: PrintPageProps) {
   };
 
   if (loading) {
-    return (
-      <div className="flex-1 flex items-center justify-center min-h-[50vh]">
-        <div className="text-center">
-          <div className="text-5xl mb-6 animate-bounce drop-shadow-[0_0_15px_rgba(251,191,36,0.5)]">☕</div>
-          <p className="text-stone-400 text-lg font-medium animate-pulse">Loading poster...</p>
-        </div>
-      </div>
-    );
+    return <LoadingSpinner message="Loading poster..." />;
   }
 
   if (error || !shopData) {

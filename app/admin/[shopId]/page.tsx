@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { validateEgyptPhoneNumber, formatPhoneNumber } from '@/app/lib/utils';
 import { ErrorDisplay } from '@/app/components/ErrorDisplay';
+import { LoadingSpinner } from '@/app/components/LoadingSpinner';
 import { supabase } from '@/app/lib/supabase-client';
 
 interface AdminPageProps {
@@ -162,14 +163,7 @@ export default function AdminPage({ params }: AdminPageProps) {
   };
 
   if (pageState === 'loading') {
-    return (
-      <div className="flex-1 flex items-center justify-center min-h-[50vh]">
-        <div className="text-center">
-          <div className="text-5xl mb-4 animate-bounce drop-shadow-[0_0_15px_rgba(251,191,36,0.5)]">☕</div>
-          <p className="text-stone-400 text-lg font-medium animate-pulse">Loading dashboard...</p>
-        </div>
-      </div>
-    );
+    return <LoadingSpinner message="Loading dashboard..." />;
   }
 
   if (pageState === 'error') {
