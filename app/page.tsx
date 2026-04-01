@@ -117,11 +117,11 @@ export default function Home() {
 
         {/* Footer */}
         <footer className="w-full border-t border-stone-800/50 pt-10 pb-6 flex flex-col md:flex-row items-center justify-between text-stone-500 text-sm">
-          <div className="flex items-center gap-2 mb-4 md:mb-0">
-            <span className="text-amber-500 text-lg">☕</span> 
-            <span className="font-bold text-stone-300">Brew Loyalty</span>
+          <div className="flex items-center gap-3 mb-4 md:mb-0">
+            <img src="/logo-small.svg" alt="Rekur" className="h-10 w-10" />
+            <span className="font-bold text-stone-300 text-lg">rekur</span>
           </div>
-          <p>© {new Date().getFullYear()} Brew. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Rekur. All rights reserved.</p>
         </footer>
       </div>
     </div>

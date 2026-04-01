@@ -172,7 +172,10 @@ export default function PrintQRPage({ params }: PrintPageProps) {
 
           {/* Footer Segment */}
           <div className="mt-16 pt-8 text-center text-gray-500 print:text-gray-500 w-full border-t-2 border-dashed border-gray-300">
-            <p className="font-bold tracking-widest uppercase mb-1">Powered by Brew</p>
+            <div className="flex items-center justify-center gap-2 mb-1">
+              <img src="/logo-small.svg" alt="Rekur" className="h-7 w-7" />
+              <p className="font-bold tracking-widest uppercase">Powered by Rekur</p>
+            </div>
             <p className="text-sm">No app required • Instant secure stamps</p>
           </div>
         </div>

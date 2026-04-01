@@ -15,7 +15,7 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Brew | Premium Digital Coffee Loyalty",
+  title: "Rekur | Digital Coffee Loyalty Platform",
   description: "Digital loyalty program for independent coffee shops. Premium experience, no apps required.",
   viewport: {
     width: "device-width",

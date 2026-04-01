@@ -82,7 +82,7 @@ export default function MyShopsPage() {
       <div className="flex-1 flex items-center justify-center min-h-[50vh]">
         <div className="text-center">
           <div className="text-5xl mb-6 animate-bounce drop-shadow-[0_0_15px_rgba(251,191,36,0.5)]">☕</div>
-          <p className="text-stone-400 text-lg font-medium animate-pulse">Brewing your shops...</p>
+          <p className="text-stone-400 text-lg font-medium animate-pulse">Loading your shops...</p>
         </div>
       </div>
     );
