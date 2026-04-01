@@ -45,14 +45,9 @@ export function Navbar() {
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
         <Link
           href="/"
-          className="group flex items-center gap-3 transition-transform hover:scale-105 duration-300"
+          className="group flex items-center transition-transform hover:scale-105 duration-300"
         >
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-600 to-amber-300 flex items-center justify-center text-stone-950 font-black text-xl shadow-lg shadow-amber-500/20 group-hover:shadow-amber-500/40 transition-shadow">
-            ☕
-          </div>
-          <span className="text-2xl font-black bg-clip-text text-transparent bg-gradient-to-r from-stone-100 to-stone-400 tracking-tight">
-            Brew
-          </span>
+          <img src="/logo.svg" alt="Rekur" className="h-12 w-12" />
         </Link>
 
         <div className="flex items-center gap-6">

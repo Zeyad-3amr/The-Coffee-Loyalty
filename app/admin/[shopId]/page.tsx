@@ -134,9 +134,8 @@ export default function AdminPage({ params }: AdminPageProps) {
     <div className="flex flex-col w-full min-h-screen bg-stone-950">
       {/* Mini Header */}
       <div className="bg-stone-950/80 backdrop-blur-md border-b border-white/5 px-6 py-4 flex items-center justify-center sticky top-0 z-40">
-        <Link href="/" className="flex items-center gap-2">
-          <div className="w-7 h-7 rounded-lg bg-gradient-to-tr from-amber-600 to-amber-300 flex items-center justify-center text-stone-950 font-black text-sm">☕</div>
-          <span className="text-sm font-black text-stone-300">Brew</span>
+        <Link href="/" className="flex items-center">
+          <img src="/logo.svg" alt="Rekur" className="h-10 w-10" />
         </Link>
       </div>
 
