@@ -118,7 +118,7 @@ export default function Home() {
         {/* Footer */}
         <footer className="w-full border-t border-stone-800/50 pt-10 pb-6 flex flex-col md:flex-row items-center justify-between text-stone-500 text-sm">
           <div className="flex items-center gap-3 mb-4 md:mb-0">
-            <img src="/logo-small.svg" alt="Rekur" className="h-10 w-10" />
+            <img src="/logo-large.svg" alt="Rekur" className="h-11 w-11" />
             <span className="font-bold text-stone-300 text-lg">rekur</span>
           </div>
           <p>© {new Date().getFullYear()} Rekur. All rights reserved.</p>

@@ -47,7 +47,7 @@ export function Navbar() {
           href="/"
           className="group flex items-center transition-transform hover:scale-105 duration-300"
         >
-          <img src="/logo-navbar.svg" alt="Rekur" className="h-10 w-auto" />
+          <img src="/logo-large.svg" alt="Rekur" className="h-11 w-11" />
         </Link>
 
         <div className="flex items-center gap-6">

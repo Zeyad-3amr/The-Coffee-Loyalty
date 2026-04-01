@@ -123,8 +123,8 @@ export default function SetupPage() {
           </Link>
 
           <div className="text-center mb-10 animate-fadeUp">
-            <div className="w-20 h-20 bg-stone-900 border border-white/5 rounded-3xl mx-auto flex items-center justify-center text-4xl mb-6 shadow-inner shadow-black/50">
-              ☕
+            <div className="w-24 h-24 mx-auto mb-6">
+              <img src="/logo-primary.svg" alt="Rekur" className="w-full h-full" />
             </div>
             <h1 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-stone-100 to-stone-400 mb-3 tracking-tight">Create Your Shop</h1>
             <p className="text-stone-400 text-lg">Set up your premium loyalty program in seconds</p>

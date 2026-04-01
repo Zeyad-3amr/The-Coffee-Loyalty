@@ -185,7 +185,7 @@ export default function AdminPage({ params }: AdminPageProps) {
       {/* Mini Header */}
       <div className="bg-stone-950/80 backdrop-blur-md border-b border-white/5 px-6 py-4 flex items-center justify-center sticky top-0 z-40">
         <Link href="/" className="flex items-center">
-          <img src="/logo-navbar.svg" alt="Rekur" className="h-9 w-auto" />
+          <img src="/logo-large.svg" alt="Rekur" className="h-11 w-11" />
         </Link>
       </div>
 
