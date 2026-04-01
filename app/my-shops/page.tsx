@@ -32,6 +32,13 @@ export default function MyShopsPage() {
         return;
       }
 
+      // Admin-only page
+      const adminEmail = process.env.NEXT_PUBLIC_ADMIN_EMAIL;
+      if (adminEmail && session.user.email !== adminEmail) {
+        router.push('/');
+        return;
+      }
+
       try {
         const response = await fetch('/api/my-shops', {
           headers: { Authorization: `Bearer ${session.access_token}` },
