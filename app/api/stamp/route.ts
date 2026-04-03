@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { query, getClient } from '@/app/lib/db';
 import { nanoid } from 'nanoid';
 
+import crypto from 'crypto';
+
 // Egypt phone validation
 function validateEgyptPhoneNumber(phone: string): boolean {
   const phoneRegex = /^01[0-9]{9}$/;
@@ -12,11 +14,32 @@ export async function POST(request: NextRequest) {
   const client = await getClient();
 
   try {
-    const { phoneNumber, shopCode } = await request.json();
+    const { phoneNumber, shopCode, t, s } = await request.json();
 
-    if (!phoneNumber || !shopCode) {
+    if (!phoneNumber || !shopCode || !t || !s) {
       return NextResponse.json(
-        { error: 'Phone number and shop code are required' },
+        { error: 'Invalid scanner link. Please scan the digital QR at the register.' },
+        { status: 400 }
+      );
+    }
+
+    // Verify token freshness (allow 120 seconds maximum to give them time to type)
+    const MAX_AGE_MS = 120 * 1000;
+    const tokenTime = parseInt(t, 10);
+    if (isNaN(tokenTime) || Date.now() - tokenTime > MAX_AGE_MS) {
+      return NextResponse.json(
+        { error: 'QR Code Expired. Please scan the refreshing code at the register again.' },
+        { status: 400 }
+      );
+    }
+
+    // Verify token cryptographic signature
+    const secret = process.env.JWT_SECRET || 'rekur-digital-qr-secret-key-2026';
+    const expectedSignature = crypto.createHmac('sha256', secret).update(t + shopCode).digest('hex');
+    
+    if (s !== expectedSignature) {
+      return NextResponse.json(
+        { error: 'Invalid security signature. Please rescan.' },
         { status: 400 }
       );
     }

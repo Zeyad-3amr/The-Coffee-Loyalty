@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { validateEgyptPhoneNumber, formatPhoneNumber, isRewardExpired } from '@/app/lib/utils';
 import { ErrorDisplay } from '@/app/components/ErrorDisplay';
 import { LoadingSpinner } from '@/app/components/LoadingSpinner';
@@ -22,8 +23,10 @@ interface ApiResponse {
   message?: string;
 }
 
-export default function ScanPage({ params }: ScanPageProps) {
-  const { shopCode } = params;
+function ScanLogic({ shopCode }: { shopCode: string }) {
+  const searchParams = useSearchParams();
+  const t = searchParams ? searchParams.get('t') : null;
+  const s = searchParams ? searchParams.get('s') : null;
   const [pageState, setPageState] = useState<PageState>('input');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [phoneError, setPhoneError] = useState('');
@@ -94,7 +97,7 @@ export default function ScanPage({ params }: ScanPageProps) {
       const response = await fetch('/api/stamp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ phoneNumber, shopCode }),
+        body: JSON.stringify({ phoneNumber, shopCode, t, s }),
       });
 
       const data: ApiResponse = await response.json();
@@ -131,6 +134,22 @@ export default function ScanPage({ params }: ScanPageProps) {
       setIsSubmitting(false);
     }
   };
+
+  if (!t || !s) {
+    return (
+      <div className="flex-1 w-full max-w-sm mx-auto px-4 py-8 md:px-6 md:py-24 relative flex flex-col justify-center animate-fadeUp">
+        <div className="glass-card p-6 md:p-10 relative z-10 text-center shadow-2xl border-red-500/20 bg-stone-900/80">
+          <div className="w-16 h-16 bg-red-500/10 rounded-full mx-auto flex items-center justify-center text-3xl mb-6 border border-red-500/20 text-red-500">
+            ⚠️
+          </div>
+          <h2 className="text-2xl font-black text-stone-100 mb-4 tracking-tight">Invalid Link</h2>
+          <p className="text-stone-400 font-medium leading-relaxed">
+            This scanner link is missing the secure timestamp. Please scan the digital QR code at the register.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   if (pageState === 'input') {
     return (
@@ -403,4 +422,12 @@ export default function ScanPage({ params }: ScanPageProps) {
   }
 
   return null;
+}
+
+export default function ScanPage({ params }: ScanPageProps) {
+  return (
+    <Suspense fallback={<LoadingSpinner message="Loading Secure Scanner..." />}>
+      <ScanLogic shopCode={params.shopCode} />
+    </Suspense>
+  );
 }

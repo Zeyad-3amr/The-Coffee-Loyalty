@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { QRCodeSVG } from 'qrcode.react';
 import { validateEgyptPhoneNumber, formatPhoneNumber } from '@/app/lib/utils';
 import { ErrorDisplay } from '@/app/components/ErrorDisplay';
 import { LoadingSpinner } from '@/app/components/LoadingSpinner';
@@ -51,6 +52,7 @@ export default function AdminPage({ params }: AdminPageProps) {
   const [isAddingStamp, setIsAddingStamp] = useState(false);
   const [isUploadingLogo, setIsUploadingLogo] = useState(false);
   const [logoError, setLogoError] = useState('');
+  const [qrToken, setQrToken] = useState({ t: '', s: '' });
 
   useEffect(() => {
     fetchAdminData();
@@ -80,6 +82,27 @@ export default function AdminPage({ params }: AdminPageProps) {
       setPageState('error');
     }
   };
+
+  useEffect(() => {
+    if (pageState === 'display' && adminData?.shop) {
+      const fetchToken = async () => {
+        try {
+          const res = await fetch(`/api/admin/${shopId}/token`);
+          const data = await res.json();
+          if (data.success) {
+            setQrToken({ t: data.t, s: data.s });
+          }
+        } catch (e) {
+          console.error(e);
+        }
+      };
+      
+      fetchToken();
+      // Regenerate QR every 20 seconds
+      const interval = setInterval(fetchToken, 20000);
+      return () => clearInterval(interval);
+    }
+  }, [shopId, pageState, adminData]);
 
   const handleAddManualStamp = async () => {
     setManualError('');
@@ -200,19 +223,39 @@ export default function AdminPage({ params }: AdminPageProps) {
                 <h1 className="text-3xl lg:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-stone-100 to-stone-400 mb-1.5 tracking-tight">
                   {adminData?.shop?.name}
                 </h1>
+                <p className="text-amber-500 font-medium">Digital Scanner Dashboard</p>
               </div>
             </div>
-            <a
-              href={`/print-qr/${shopId}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="bg-stone-900 hover:bg-stone-800 text-stone-300 text-sm font-semibold py-2.5 px-5 rounded-lg transition flex items-center justify-center border border-white/10 hover:border-amber-500/30 shadow-lg"
-            >
-              Print QR Poster
-            </a>
         </div>
 
         <div className="space-y-6 animate-fadeUp">
+          {/* Digital QR Code Display */}
+          <div className="glass-card p-8 md:p-12 mb-8 bg-gradient-to-br from-amber-500/10 to-transparent border-amber-500/20 flex flex-col items-center justify-center text-center shadow-2xl">
+            <h2 className="text-2xl font-black text-white mb-2 uppercase tracking-wider">Scan to Collect</h2>
+            <p className="text-amber-500/80 text-sm font-bold uppercase tracking-widest mb-8">Strictly Digital • Auto-Refreshes</p>
+            
+            <div className="bg-white p-4 rounded-xl shadow-[0_0_40px_rgba(245,158,11,0.2)]">
+              {adminData?.shop?.qrCode && qrToken.t ? (
+                <QRCodeSVG
+                  value={`${typeof window !== 'undefined' ? window.location.origin : ''}/scan/${adminData.shop.qrCode}?t=${qrToken.t}&s=${qrToken.s}`}
+                  size={240}
+                  level="H"
+                  includeMargin={false}
+                  fgColor="#000000"
+                  bgColor="#ffffff"
+                />
+              ) : (
+                <div className="w-[240px] h-[240px] bg-stone-100 flex items-center justify-center text-stone-400">
+                  Loading Secure QR...
+                </div>
+              )}
+            </div>
+            
+            <div className="mt-8 flex items-center gap-2 text-stone-400 text-sm font-medium">
+              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+              Secure code regenerating automatically
+            </div>
+          </div>
           {/* Shop Logo */}
           <div className="glass-card p-6 bg-gradient-to-br from-stone-900/50 to-stone-900/10">
             <h2 className="text-lg font-bold text-stone-100 mb-1">Shop Logo</h2>
