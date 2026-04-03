@@ -46,6 +46,7 @@ export async function GET(
         phoneNumber: s.phoneNumber,
         stampCount: s.stampCount,
         totalScans: s.totalScans ?? 0,
+        totalRewards: s.totalRewards ?? 0,
         rewardActive: s.rewardActive,
         rewardExpiresAt: s.rewardExpiresAt,
         lastScannedAt: s.lastScannedAt,

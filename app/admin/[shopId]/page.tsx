@@ -18,6 +18,7 @@ interface Customer {
   phoneNumber: string;
   stampCount: number;
   totalScans: number;
+  totalRewards: number;
   rewardActive: boolean;
   rewardExpiresAt: string | null;
   lastScannedAt: string | null;
@@ -363,6 +364,9 @@ export default function AdminPage({ params }: AdminPageProps) {
                       Total Scans
                     </th>
                     <th className="px-6 py-3 text-center text-[11px] font-bold uppercase tracking-wider text-stone-400">
+                      Free Coffees
+                    </th>
+                    <th className="px-6 py-3 text-center text-[11px] font-bold uppercase tracking-wider text-stone-400">
                       Reward Status
                     </th>
                     <th className="px-6 py-3 text-left text-[11px] font-bold uppercase tracking-wider text-stone-400">
@@ -373,7 +377,7 @@ export default function AdminPage({ params }: AdminPageProps) {
                 <tbody className="divide-y divide-white/5 bg-stone-900/10">
                   {!adminData?.customers || adminData.customers.length === 0 ? (
                     <tr>
-                      <td colSpan={5} className="px-6 py-12 text-center text-stone-500">
+                      <td colSpan={6} className="px-6 py-12 text-center text-stone-500">
                         <div className="text-3xl mb-3 opacity-50">👥</div>
                         <p className="text-sm">No customers have scanned yet.</p>
                       </td>
@@ -392,6 +396,11 @@ export default function AdminPage({ params }: AdminPageProps) {
                         <td className="px-6 py-3.5 text-center">
                           <span className="text-stone-300 text-sm font-bold">
                             {customer.totalScans}
+                          </span>
+                        </td>
+                        <td className="px-6 py-3.5 text-center">
+                          <span className="inline-flex items-center justify-center gap-1 text-sm font-bold text-orange-400">
+                            ☕ {customer.totalRewards}
                           </span>
                         </td>
                         <td className="px-6 py-3.5 text-center">
