@@ -5,7 +5,7 @@ import { Navbar } from './Navbar';
 
 export function NavbarWrapper() {
   const pathname = usePathname();
-  const hideNav = pathname.startsWith('/admin') || pathname.startsWith('/print-qr');
+  const hideNav = pathname.startsWith('/admin') || pathname.startsWith('/print-qr') || pathname.startsWith('/display-qr');
 
   if (hideNav) return null;
 
