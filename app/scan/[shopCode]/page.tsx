@@ -32,6 +32,16 @@ export default function ScanPage({ params }: ScanPageProps) {
   const [rewardExpiresAt, setRewardExpiresAt] = useState<Date | null>(null);
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [shopData, setShopData] = useState<{name: string, logoUrl: string|null} | null>(null);
+
+  useEffect(() => {
+    fetch(`/api/shop/code/${shopCode}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && data.shop) setShopData(data.shop);
+      })
+      .catch(console.error);
+  }, [shopCode]);
 
   useEffect(() => {
     const stored = sessionStorage.getItem(`reward_${shopCode}`);
@@ -117,10 +127,29 @@ export default function ScanPage({ params }: ScanPageProps) {
         
         <div className="glass-card p-6 md:p-10 relative z-10 mx-auto w-full shadow-2xl">
           <div className="text-center mb-8">
-            <div className="w-16 h-16 bg-gradient-to-br from-amber-400 to-amber-600 rounded-2xl mx-auto flex items-center justify-center text-3xl mb-6 shadow-inner border border-stone-800">
-              📱
-            </div>
-            <h1 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-stone-100 to-stone-400 mb-2 tracking-tight">Scan to Collect</h1>
+            {shopData ? (
+              <>
+                {shopData.logoUrl ? (
+                  <div className="w-20 h-20 rounded-full mx-auto mb-6 flex items-center justify-center overflow-hidden border-2 border-stone-800 shadow-lg bg-white">
+                    <img src={shopData.logoUrl} alt={shopData.name} className="w-full h-full object-contain p-1" />
+                  </div>
+                ) : (
+                  <div className="w-20 h-20 bg-gradient-to-br from-amber-400 to-amber-600 rounded-full mx-auto flex items-center justify-center text-4xl mb-6 shadow-inner border border-stone-800">
+                    🏪
+                  </div>
+                )}
+                <h1 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-stone-100 to-stone-400 mb-2 tracking-tight">
+                  {shopData.name}
+                </h1>
+              </>
+            ) : (
+              <>
+                <div className="w-16 h-16 bg-gradient-to-br from-amber-400 to-amber-600 rounded-2xl mx-auto flex items-center justify-center text-3xl mb-6 shadow-inner border border-stone-800">
+                  📱
+                </div>
+                <h1 className="text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r from-stone-100 to-stone-400 mb-2 tracking-tight">Scan to Collect</h1>
+              </>
+            )}
             <p className="text-stone-400 text-sm font-medium">Enter your phone number</p>
           </div>
 
@@ -165,6 +194,13 @@ export default function ScanPage({ params }: ScanPageProps) {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[radial-gradient(circle,rgba(245,158,11,0.12)_0%,transparent_60%)] rounded-full pointer-events-none" />
         
         <div className="glass-card p-6 md:p-10 relative z-10 text-center shadow-2xl">
+          {shopData?.logoUrl ? (
+            <div className="w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center overflow-hidden border-2 border-stone-800 shadow-lg bg-white">
+              <img src={shopData.logoUrl} alt={shopData.name} className="w-full h-full object-contain p-0.5" />
+            </div>
+          ) : (
+            shopData?.name && <h2 className="text-xl text-amber-500 font-bold mb-4">{shopData.name}</h2>
+          )}
           <h2 className="text-2xl font-black text-stone-100 mb-6 tracking-tight">Confirm Number</h2>
           <div className="bg-stone-950 rounded-2xl p-6 mb-8 border border-white/5 shadow-inner">
             <p className="text-3xl font-mono tracking-widest font-bold text-amber-500 drop-shadow-[0_0_8px_rgba(245,158,11,0.5)]">

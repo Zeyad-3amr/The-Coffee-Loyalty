@@ -84,9 +84,16 @@ export default function PrintQRPage({ params }: PrintPageProps) {
       {/* Non-print content: Header and buttons */}
       <div className="print:hidden border-b border-white/5 p-6 bg-stone-950/50 backdrop-blur-sm z-50 w-full sticky top-0">
         <div className="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
-          <div className="text-center sm:text-left">
-            <h1 className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-stone-100 to-stone-400 tracking-tight">{shopData.name}</h1>
-            <p className="text-amber-500 text-sm font-semibold tracking-wide uppercase mt-1">Print QR Poster</p>
+          <div className="flex items-center gap-4">
+            {shopData.logoUrl && (
+              <div className="w-12 h-12 rounded-full bg-white border-2 border-stone-800 overflow-hidden shrink-0 flex items-center justify-center shadow-lg">
+                <img src={shopData.logoUrl} alt="Logo" className="w-full h-full object-contain p-0.5" />
+              </div>
+            )}
+            <div className="text-center sm:text-left">
+              <h1 className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-stone-100 to-stone-400 tracking-tight">{shopData.name}</h1>
+              <p className="text-amber-500 text-sm font-semibold tracking-wide uppercase mt-1">Print QR Poster</p>
+            </div>
           </div>
           <button
             onClick={handlePrint}
