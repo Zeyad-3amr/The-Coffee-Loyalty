@@ -137,7 +137,7 @@ function ScanLogic({ shopCode }: { shopCode: string }) {
 
   if (!t || !s) {
     return (
-      <div className="flex-1 w-full max-w-sm mx-auto px-4 py-8 md:px-6 md:py-24 relative flex flex-col justify-center animate-fadeUp">
+      <div className="flex-1 w-full max-w-sm mx-auto px-4 py-8 md:px-6 md:py-24 relative flex flex-col justify-center animate-fadeUp overflow-x-hidden">
         <div className="glass-card p-6 md:p-10 relative z-10 text-center shadow-2xl border-red-500/20 bg-stone-900/80">
           <div className="w-16 h-16 bg-red-500/10 rounded-full mx-auto flex items-center justify-center text-3xl mb-6 border border-red-500/20 text-red-500">
             ⚠️
@@ -153,7 +153,7 @@ function ScanLogic({ shopCode }: { shopCode: string }) {
 
   if (pageState === 'input') {
     return (
-      <div className="flex-1 w-full max-w-sm mx-auto px-4 py-8 md:px-6 md:py-24 relative flex flex-col justify-center animate-fadeUp">
+      <div className="flex-1 w-full max-w-sm mx-auto px-4 py-8 md:px-6 md:py-24 relative flex flex-col justify-center animate-fadeUp overflow-x-hidden">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[radial-gradient(circle,rgba(245,158,11,0.12)_0%,transparent_60%)] rounded-full pointer-events-none" />
         
         <div className="glass-card p-6 md:p-10 relative z-10 mx-auto w-full shadow-2xl">
@@ -221,7 +221,7 @@ function ScanLogic({ shopCode }: { shopCode: string }) {
 
   if (pageState === 'confirm') {
     return (
-      <div className="flex-1 w-full max-w-sm mx-auto px-4 py-8 md:px-6 md:py-24 relative flex flex-col justify-center animate-fadeUp">
+      <div className="flex-1 w-full max-w-sm mx-auto px-4 py-8 md:px-6 md:py-24 relative flex flex-col justify-center animate-fadeUp overflow-x-hidden">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[radial-gradient(circle,rgba(245,158,11,0.12)_0%,transparent_60%)] rounded-full pointer-events-none" />
         
         <div className="glass-card p-6 md:p-10 relative z-10 text-center shadow-2xl">
@@ -266,7 +266,7 @@ function ScanLogic({ shopCode }: { shopCode: string }) {
 
   if (pageState === 'success') {
     return (
-      <div className="flex-1 w-full max-w-sm mx-auto px-4 py-8 md:px-6 md:py-24 relative flex flex-col justify-center animate-fadeUp">
+      <div className="flex-1 w-full max-w-sm mx-auto px-4 py-8 md:px-6 md:py-24 relative flex flex-col justify-center animate-fadeUp overflow-x-hidden">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[radial-gradient(circle,rgba(245,158,11,0.15)_0%,transparent_60%)] rounded-full pointer-events-none" />
         
         <div className="relative z-10 text-center">
@@ -284,14 +284,22 @@ function ScanLogic({ shopCode }: { shopCode: string }) {
               {Array.from({ length: 10 }).map((_, i) => (
                 <div
                   key={i}
-                  className={`aspect-square rounded-xl font-black flex items-center justify-center text-lg animate-fadeUp transition-all duration-500 shadow-inner ${
+                  className={`aspect-square rounded-xl overflow-hidden flex items-center justify-center text-lg animate-fadeUp transition-all duration-500 shadow-inner ${
                     i < stampCount
-                      ? 'bg-gradient-to-br from-amber-400 to-amber-600 text-stone-900 border-b-4 border-amber-700'
+                      ? 'bg-white border-b-4 border-amber-700'
                       : 'bg-stone-900/80 border border-white/5 text-stone-600'
                   }`}
                   style={{ animationDelay: `${i * 0.05}s` }}
                 >
-                  {i < stampCount ? '✓' : i + 1}
+                  {i < stampCount ? (
+                    shopData?.logoUrl ? (
+                      <img src={shopData.logoUrl} alt="✓" className="w-full h-full object-contain p-1.5" />
+                    ) : (
+                      <span className="font-black text-amber-600">✓</span>
+                    )
+                  ) : (
+                    <span className="font-black">{i + 1}</span>
+                  )}
                 </div>
               ))}
             </div>
@@ -385,7 +393,7 @@ function ScanLogic({ shopCode }: { shopCode: string }) {
 
   if (pageState === 'cooldown') {
     return (
-      <div className="flex-1 w-full max-w-sm mx-auto px-4 py-8 md:px-6 md:py-24 relative flex flex-col justify-center animate-fadeUp">
+      <div className="flex-1 w-full max-w-sm mx-auto px-4 py-8 md:px-6 md:py-24 relative flex flex-col justify-center animate-fadeUp overflow-x-hidden">
         <div className="glass-card p-6 md:p-10 text-center relative z-10 mx-auto w-full shadow-2xl">
           <div className="w-20 h-20 bg-stone-800 rounded-full mx-auto flex items-center justify-center text-4xl mb-6 shadow-inner border border-white/5">
             ⏱️
