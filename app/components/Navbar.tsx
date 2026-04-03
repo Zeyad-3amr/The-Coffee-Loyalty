@@ -59,7 +59,7 @@ export function Navbar() {
             )}
           </div>
 
-          {user ? (
+          {user && (
             <div className="flex items-center gap-3">
               <span className="hidden md:block text-xs text-stone-500 font-medium truncate max-w-[140px]">
                 {user.email}
@@ -71,7 +71,8 @@ export function Navbar() {
                 Logout
               </button>
             </div>
-          ) : (
+          )}
+          {!pathname.startsWith('/scan') && !user && (
             <Link
               href="/auth"
               className="group relative px-6 py-2.5 rounded-full font-semibold overflow-hidden"

@@ -112,10 +112,10 @@ export default function ScanPage({ params }: ScanPageProps) {
 
   if (pageState === 'input') {
     return (
-      <div className="flex-1 w-full max-w-sm mx-auto px-6 py-24 relative flex flex-col justify-center animate-fadeUp">
+      <div className="flex-1 w-full max-w-sm mx-auto px-4 py-8 md:px-6 md:py-24 relative flex flex-col justify-center animate-fadeUp">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[radial-gradient(circle,rgba(245,158,11,0.12)_0%,transparent_60%)] rounded-full pointer-events-none" />
         
-        <div className="glass-card p-10 relative z-10 mx-auto w-full shadow-2xl">
+        <div className="glass-card p-6 md:p-10 relative z-10 mx-auto w-full shadow-2xl">
           <div className="text-center mb-8">
             <div className="w-16 h-16 bg-gradient-to-br from-amber-400 to-amber-600 rounded-2xl mx-auto flex items-center justify-center text-3xl mb-6 shadow-inner border border-stone-800">
               📱
@@ -161,10 +161,10 @@ export default function ScanPage({ params }: ScanPageProps) {
 
   if (pageState === 'confirm') {
     return (
-      <div className="flex-1 w-full max-w-sm mx-auto px-6 py-24 relative flex flex-col justify-center animate-fadeUp">
+      <div className="flex-1 w-full max-w-sm mx-auto px-4 py-8 md:px-6 md:py-24 relative flex flex-col justify-center animate-fadeUp">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[radial-gradient(circle,rgba(245,158,11,0.12)_0%,transparent_60%)] rounded-full pointer-events-none" />
         
-        <div className="glass-card p-10 relative z-10 text-center shadow-2xl">
+        <div className="glass-card p-6 md:p-10 relative z-10 text-center shadow-2xl">
           <h2 className="text-2xl font-black text-stone-100 mb-6 tracking-tight">Confirm Number</h2>
           <div className="bg-stone-950 rounded-2xl p-6 mb-8 border border-white/5 shadow-inner">
             <p className="text-3xl font-mono tracking-widest font-bold text-amber-500 drop-shadow-[0_0_8px_rgba(245,158,11,0.5)]">
@@ -199,7 +199,7 @@ export default function ScanPage({ params }: ScanPageProps) {
 
   if (pageState === 'success') {
     return (
-      <div className="flex-1 w-full max-w-sm mx-auto px-6 py-24 relative flex flex-col justify-center animate-fadeUp">
+      <div className="flex-1 w-full max-w-sm mx-auto px-4 py-8 md:px-6 md:py-24 relative flex flex-col justify-center animate-fadeUp">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[radial-gradient(circle,rgba(245,158,11,0.15)_0%,transparent_60%)] rounded-full pointer-events-none" />
         
         <div className="relative z-10 text-center">
@@ -210,7 +210,7 @@ export default function ScanPage({ params }: ScanPageProps) {
             <h2 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-stone-100 to-stone-400 tracking-tight">Stamp Added!</h2>
           </div>
 
-          <div className="glass-card p-8 mb-10 overflow-hidden relative">
+          <div className="glass-card p-6 md:p-8 mb-10 overflow-hidden relative">
             <div className="absolute bottom-0 inset-x-0 h-1/2 bg-gradient-to-t from-amber-500/5 to-transparent" />
             
             <div className="grid grid-cols-5 gap-3 mb-6 relative z-10">
@@ -254,7 +254,7 @@ export default function ScanPage({ params }: ScanPageProps) {
 
   if (pageState === 'reward') {
     return (
-      <div className="flex-1 w-full max-w-sm mx-auto px-6 py-20 relative flex flex-col justify-center overflow-hidden">
+      <div className="flex-1 w-full max-w-sm mx-auto px-4 py-8 md:px-6 md:py-20 relative flex flex-col justify-center overflow-hidden">
         <style>{`
           @keyframes float {
             0%, 100% { transform: translateY(0px) rotate(0deg); }
@@ -282,7 +282,7 @@ export default function ScanPage({ params }: ScanPageProps) {
           <div className="absolute -top-16 -left-6 text-6xl opacity-30" style={{animation: 'float 4s ease-in-out infinite'}}>✨</div>
           <div className="absolute -bottom-16 -right-6 text-6xl opacity-30" style={{ animation: 'float 3s ease-in-out infinite 1s' }}>🎉</div>
 
-          <div className="glass-card bg-stone-900/80 p-10 shadow-2xl border-2 border-amber-500/50 glow-amber relative">
+          <div className="glass-card bg-stone-900/80 p-6 md:p-10 shadow-2xl border-2 border-amber-500/50 glow-amber relative">
             <div className="absolute -top-8 left-1/2 -translate-x-1/2 text-6xl" style={{ animation: 'spin 6s linear infinite' }}>🌟</div>
 
             <div className="mt-8">
@@ -327,8 +327,8 @@ export default function ScanPage({ params }: ScanPageProps) {
 
   if (pageState === 'cooldown') {
     return (
-      <div className="flex-1 w-full max-w-sm mx-auto px-6 py-24 relative flex flex-col justify-center animate-fadeUp">
-        <div className="glass-card p-10 text-center relative z-10 mx-auto w-full shadow-2xl">
+      <div className="flex-1 w-full max-w-sm mx-auto px-4 py-8 md:px-6 md:py-24 relative flex flex-col justify-center animate-fadeUp">
+        <div className="glass-card p-6 md:p-10 text-center relative z-10 mx-auto w-full shadow-2xl">
           <div className="w-20 h-20 bg-stone-800 rounded-full mx-auto flex items-center justify-center text-4xl mb-6 shadow-inner border border-white/5">
             ⏱️
           </div>

@@ -82,7 +82,7 @@ export default function PrintQRPage({ params }: PrintPageProps) {
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-amber-500/10 blur-[150px] rounded-full pointer-events-none print:hidden" />
 
       {/* Non-print content: Header and buttons */}
-      <div className="print:hidden border-b border-white/5 p-6 bg-stone-950/50 backdrop-blur-sm z-10 w-full sticky top-0">
+      <div className="print:hidden border-b border-white/5 p-6 bg-stone-950/50 backdrop-blur-sm z-50 w-full sticky top-0">
         <div className="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
           <div className="text-center sm:text-left">
             <h1 className="text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r from-stone-100 to-stone-400 tracking-tight">{shopData.name}</h1>

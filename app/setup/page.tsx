@@ -108,7 +108,7 @@ export default function SetupPage() {
 
   if (pageState === 'input') {
     return (
-      <div className="flex-1 w-full max-w-lg mx-auto px-6 py-20 relative">
+      <div className="flex-1 w-full max-w-lg mx-auto px-4 py-8 md:px-6 md:py-20 relative">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[radial-gradient(circle,rgba(245,158,11,0.12)_0%,transparent_60%)] rounded-full pointer-events-none" />
 
         <div className="relative z-10">
