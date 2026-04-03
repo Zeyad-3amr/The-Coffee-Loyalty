@@ -177,10 +177,10 @@ export default function AdminPage({ params }: AdminPageProps) {
   return (
     <div className="flex flex-col w-full min-h-screen bg-stone-950">
       {/* Mini Header */}
-      <div className="bg-stone-950/80 backdrop-blur-md border-b border-white/5 px-6 py-4 flex items-center justify-center sticky top-0 z-40">
-        <Link href="/" className="flex items-center">
-          <img src="/logo-large.svg" alt="Rekur" className="h-11 w-11" />
-        </Link>
+      <div className="bg-stone-950/80 backdrop-blur-md border-b border-white/5 px-6 py-6 flex items-center justify-center">
+        <div className="flex items-center">
+          <img src="/logo-large.svg" alt="Rekur" className="h-24 w-24 drop-shadow-[0_0_15px_rgba(251,191,36,0.3)]" />
+        </div>
       </div>
 
       <div className="relative flex-1">
@@ -190,10 +190,17 @@ export default function AdminPage({ params }: AdminPageProps) {
       <main className="flex-1 w-full max-w-7xl mx-auto px-6 py-10 z-10">
         {/* Header */}
         <div className="flex justify-between items-start mb-8 pb-6 border-b border-white/5">
-            <div>
-              <h1 className="text-3xl lg:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-stone-100 to-stone-400 mb-1.5 tracking-tight">
-                {adminData?.shop?.name}
-              </h1>
+            <div className="flex items-center gap-4">
+              {adminData?.shop?.logoUrl && (
+                <div className="w-16 h-16 rounded-full bg-white border-2 border-stone-800 overflow-hidden shrink-0 flex items-center justify-center shadow-lg">
+                  <img src={adminData.shop.logoUrl} alt="Shop Logo" className="w-full h-full object-contain p-0.5" />
+                </div>
+              )}
+              <div>
+                <h1 className="text-3xl lg:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-stone-100 to-stone-400 mb-1.5 tracking-tight">
+                  {adminData?.shop?.name}
+                </h1>
+              </div>
             </div>
             <a
               href={`/print-qr/${shopId}`}
