@@ -304,16 +304,7 @@ function ScanLogic({ shopCode }: { shopCode: string }) {
             </div>
           </div>
 
-          <button
-            onClick={() => {
-              setPhoneNumber('');
-              setStampCount(0);
-              setPageState('input');
-            }}
-            className="w-full btn-amber py-4 rounded-xl text-lg shadow-lg"
-          >
-            Scan Another
-          </button>
+
         </div>
       </div>
     );
