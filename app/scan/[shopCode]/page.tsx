@@ -271,9 +271,15 @@ function ScanLogic({ shopCode }: { shopCode: string }) {
         
         <div className="relative z-10 text-center">
           <div className="mb-10">
-            <div className="w-20 h-20 bg-gradient-to-br from-green-400 to-green-600 rounded-full mx-auto flex items-center justify-center text-4xl mb-6 shadow-[0_0_30px_rgba(34,197,94,0.4)] border border-stone-800">
-              🎉
-            </div>
+            {shopData?.logoUrl ? (
+              <div className="w-24 h-24 rounded-full mx-auto mb-6 flex items-center justify-center overflow-hidden border-4 border-stone-800 shadow-[0_0_30px_rgba(245,158,11,0.3)] bg-white animate-fadeUp">
+                <img src={shopData.logoUrl} alt={shopData.name} className="w-full h-full object-contain p-1.5" />
+              </div>
+            ) : (
+              <div className="w-20 h-20 bg-gradient-to-br from-green-400 to-green-600 rounded-full mx-auto flex items-center justify-center text-4xl mb-6 shadow-[0_0_30px_rgba(34,197,94,0.4)] border border-stone-800 animate-fadeUp">
+                🎉
+              </div>
+            )}
             <h2 className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-stone-100 to-stone-400 tracking-tight">Stamp Added!</h2>
           </div>
 
