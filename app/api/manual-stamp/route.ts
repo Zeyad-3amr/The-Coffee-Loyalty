@@ -100,9 +100,9 @@ export async function POST(request: NextRequest) {
       newStampCount = 0;
     }
 
-    // Update stamp
+    // Update stamp (also increment totalScans which never resets)
     const updatedStamp = await client.query(
-      'UPDATE "Stamp" SET "stampCount" = $1, "lastScannedAt" = $2, "rewardActive" = $3, "rewardExpiresAt" = $4, "updatedAt" = NOW() WHERE id = $5 RETURNING *',
+      'UPDATE "Stamp" SET "stampCount" = $1, "lastScannedAt" = $2, "rewardActive" = $3, "rewardExpiresAt" = $4, "updatedAt" = NOW(), "totalScans" = "totalScans" + 1 WHERE id = $5 RETURNING *',
       [newStampCount, now, rewardActive, rewardExpiresAt, stamp.id]
     );
 

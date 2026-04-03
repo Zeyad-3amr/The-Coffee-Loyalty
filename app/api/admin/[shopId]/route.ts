@@ -34,7 +34,7 @@ export async function GET(
 
     const stamps = stampsResult.rows;
     const totalCustomers = stamps.length;
-    const totalStampsGiven = stamps.reduce((sum: number, s: any) => sum + s.stampCount, 0);
+    const totalStampsGiven = stamps.reduce((sum: number, s: any) => sum + (s.totalScans ?? s.stampCount), 0);
     const totalRewardsRedeemed = stamps.filter((s: any) => s.rewardActive).length;
 
     return NextResponse.json({
@@ -44,6 +44,7 @@ export async function GET(
         id: s.customerId,
         phoneNumber: s.phoneNumber,
         stampCount: s.stampCount,
+        totalScans: s.totalScans ?? 0,
         rewardActive: s.rewardActive,
         rewardExpiresAt: s.rewardExpiresAt,
         lastScannedAt: s.lastScannedAt,
