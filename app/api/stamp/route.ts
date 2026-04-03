@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
 
     // Find or create stamp record
     const stampResult = await client.query(
-      'SELECT * FROM "Stamp" WHERE "shopId" = $1 AND "customerId" = $2',
+      'SELECT *, EXTRACT(EPOCH FROM (NOW() - "lastScannedAt")) AS seconds_since_scan FROM "Stamp" WHERE "shopId" = $1 AND "customerId" = $2',
       [shopId, customerId]
     );
 
@@ -92,10 +92,9 @@ export async function POST(request: NextRequest) {
       stamp.stampCount = 0;
     }
 
-    // Check cooldown
-    if (stamp.lastScannedAt) {
-      const timeSinceLastScan = now.getTime() - new Date(stamp.lastScannedAt).getTime();
-      if (timeSinceLastScan < COOLDOWN_MS) {
+    // Check cooldown using database's timezone-proof calculation
+    if (stamp.lastScannedAt && stamp.seconds_since_scan !== null) {
+      if (stamp.seconds_since_scan * 1000 < COOLDOWN_MS) {
         await client.query('ROLLBACK');
         return NextResponse.json(
           { error: 'Please wait before scanning again' },

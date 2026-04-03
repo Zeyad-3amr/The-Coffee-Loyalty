@@ -35,6 +35,16 @@ export default function ScanPage({ params }: ScanPageProps) {
   const [shopData, setShopData] = useState<{name: string, logoUrl: string|null} | null>(null);
 
   useEffect(() => {
+    // Prevent device-level scan abuse across all numbers
+    const lastDeviceScan = localStorage.getItem(`device_scan_${shopCode}`);
+    if (lastDeviceScan) {
+      const timeSince = Date.now() - parseInt(lastDeviceScan, 10);
+      if (timeSince < 7 * 60 * 1000) {
+        setPageState('cooldown');
+        return;
+      }
+    }
+
     fetch(`/api/shop/code/${shopCode}`)
       .then((res) => res.json())
       .then((data) => {
@@ -104,10 +114,12 @@ export default function ScanPage({ params }: ScanPageProps) {
           `reward_${shopCode}`,
           JSON.stringify({ expiresAt: data.rewardExpiresAt })
         );
+        localStorage.setItem(`device_scan_${shopCode}`, Date.now().toString());
         setRewardActive(true);
         setRewardExpiresAt(new Date(data.rewardExpiresAt!));
         setPageState('reward');
       } else {
+        localStorage.setItem(`device_scan_${shopCode}`, Date.now().toString());
         setStampCount(data.stampCount || 0);
         setPageState('success');
       }
