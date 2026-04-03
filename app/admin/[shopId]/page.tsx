@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { QRCodeSVG } from 'qrcode.react';
 import { validateEgyptPhoneNumber, formatPhoneNumber } from '@/app/lib/utils';
 import { ErrorDisplay } from '@/app/components/ErrorDisplay';
 import { LoadingSpinner } from '@/app/components/LoadingSpinner';
@@ -52,7 +51,6 @@ export default function AdminPage({ params }: AdminPageProps) {
   const [isAddingStamp, setIsAddingStamp] = useState(false);
   const [isUploadingLogo, setIsUploadingLogo] = useState(false);
   const [logoError, setLogoError] = useState('');
-  const [qrToken, setQrToken] = useState({ t: '', s: '' });
 
   useEffect(() => {
     fetchAdminData();
@@ -82,27 +80,6 @@ export default function AdminPage({ params }: AdminPageProps) {
       setPageState('error');
     }
   };
-
-  useEffect(() => {
-    if (pageState === 'display' && adminData?.shop) {
-      const fetchToken = async () => {
-        try {
-          const res = await fetch(`/api/admin/${shopId}/token`);
-          const data = await res.json();
-          if (data.success) {
-            setQrToken({ t: data.t, s: data.s });
-          }
-        } catch (e) {
-          console.error(e);
-        }
-      };
-      
-      fetchToken();
-      // Regenerate QR every 20 seconds
-      const interval = setInterval(fetchToken, 20000);
-      return () => clearInterval(interval);
-    }
-  }, [shopId, pageState, adminData]);
 
   const handleAddManualStamp = async () => {
     setManualError('');
@@ -229,32 +206,24 @@ export default function AdminPage({ params }: AdminPageProps) {
         </div>
 
         <div className="space-y-6 animate-fadeUp">
-          {/* Digital QR Code Display */}
-          <div className="glass-card p-8 md:p-12 mb-8 bg-gradient-to-br from-amber-500/10 to-transparent border-amber-500/20 flex flex-col items-center justify-center text-center shadow-2xl">
-            <h2 className="text-2xl font-black text-white mb-2 uppercase tracking-wider">Scan to Collect</h2>
-            <p className="text-amber-500/80 text-sm font-bold uppercase tracking-widest mb-8">Strictly Digital • Auto-Refreshes</p>
-            
-            <div className="bg-white p-4 rounded-xl shadow-[0_0_40px_rgba(245,158,11,0.2)]">
-              {adminData?.shop?.qrCode && qrToken.t ? (
-                <QRCodeSVG
-                  value={`${typeof window !== 'undefined' ? window.location.origin : ''}/scan/${adminData.shop.qrCode}?t=${qrToken.t}&s=${qrToken.s}`}
-                  size={240}
-                  level="H"
-                  includeMargin={false}
-                  fgColor="#000000"
-                  bgColor="#ffffff"
-                />
-              ) : (
-                <div className="w-[240px] h-[240px] bg-stone-100 flex items-center justify-center text-stone-400">
-                  Loading Secure QR...
-                </div>
-              )}
+          {/* Customer Display Link */}
+          <div className="glass-card p-10 bg-gradient-to-br from-amber-500/10 to-transparent border border-amber-500/20 hover:border-amber-500/40 transition flex flex-col items-center justify-center text-center shadow-lg relative overflow-hidden group">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-amber-500/10 blur-[100px] rounded-full pointer-events-none group-hover:bg-amber-500/20 transition-all duration-700" />
+            <div className="w-16 h-16 rounded-full bg-stone-900 border border-amber-500/30 flex items-center justify-center text-3xl mb-6 shadow-inner text-amber-500 mb-6 drop-shadow-md">
+              📱
             </div>
-            
-            <div className="mt-8 flex items-center gap-2 text-stone-400 text-sm font-medium">
-              <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-              Secure code regenerating automatically
-            </div>
+            <h2 className="text-2xl font-black text-white mb-3 tracking-tight">Customer Scanner Display</h2>
+            <p className="text-stone-400 font-medium mb-8 max-w-lg">
+              Open the secure, auto-refreshing digital QR Code on an iPad or tablet facing your customers at the register.
+            </p>
+            <a
+              href={`/display-qr/${shopId}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-amber py-4 px-10 rounded-xl text-lg shadow-xl shadow-amber-500/20 font-bold inline-flex items-center gap-3 transition-transform hover:scale-[1.02]"
+            >
+              Open Live Display <span className="text-xl">↗</span>
+            </a>
           </div>
           {/* Shop Logo */}
           <div className="glass-card p-6 bg-gradient-to-br from-stone-900/50 to-stone-900/10">
