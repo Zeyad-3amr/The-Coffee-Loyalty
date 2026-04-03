@@ -64,6 +64,12 @@ export function Navbar() {
               <span className="hidden md:block text-xs text-stone-500 font-medium truncate max-w-[140px]">
                 {user.email}
               </span>
+              <button
+                onClick={handleLogout}
+                className="px-5 py-2.5 rounded-full text-sm font-semibold text-stone-300 border border-white/10 hover:border-amber-500/30 hover:text-amber-400 transition"
+              >
+                Logout
+              </button>
             </div>
           )}
           {!pathname.startsWith('/scan') && !user && (
