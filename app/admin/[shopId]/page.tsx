@@ -190,41 +190,34 @@ export default function AdminPage({ params }: AdminPageProps) {
       <main className="flex-1 w-full max-w-7xl mx-auto px-6 py-10 z-10">
         {/* Header */}
         <div className="flex justify-between items-start mb-8 pb-6 border-b border-white/5">
-            <div className="flex items-center gap-4">
-              {adminData?.shop?.logoUrl && (
-                <div className="w-16 h-16 rounded-full bg-white border-2 border-stone-800 overflow-hidden shrink-0 flex items-center justify-center shadow-lg">
-                  <img src={adminData.shop.logoUrl} alt="Shop Logo" className="w-full h-full object-contain p-0.5" />
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+              <div className="flex items-center gap-4">
+                {adminData?.shop?.logoUrl && (
+                  <div className="w-16 h-16 rounded-full bg-white border-2 border-stone-800 overflow-hidden shrink-0 flex items-center justify-center shadow-lg">
+                    <img src={adminData.shop.logoUrl} alt="Shop Logo" className="w-full h-full object-contain p-0.5" />
+                  </div>
+                )}
+                <div>
+                  <h1 className="text-3xl lg:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-stone-100 to-stone-400 mb-1.5 tracking-tight">
+                    {adminData?.shop?.name}
+                  </h1>
+                  <p className="text-amber-500 font-medium">Digital Scanner Dashboard</p>
                 </div>
-              )}
-              <div>
-                <h1 className="text-3xl lg:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-stone-100 to-stone-400 mb-1.5 tracking-tight">
-                  {adminData?.shop?.name}
-                </h1>
-                <p className="text-amber-500 font-medium">Digital Scanner Dashboard</p>
               </div>
+              <a
+                href={`/display-qr/${shopId}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-stone-900 hover:bg-stone-800 text-amber-500 text-sm font-bold py-2.5 px-6 rounded-lg transition flex items-center justify-center border border-amber-500/20 hover:border-amber-500/50 shadow-lg group"
+              >
+                Open Live Display 
+                <span className="ml-2 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5">↗</span>
+              </a>
             </div>
         </div>
 
         <div className="space-y-6 animate-fadeUp">
-          {/* Customer Display Link */}
-          <div className="glass-card p-10 bg-gradient-to-br from-amber-500/10 to-transparent border border-amber-500/20 hover:border-amber-500/40 transition flex flex-col items-center justify-center text-center shadow-lg relative overflow-hidden group">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-amber-500/10 blur-[100px] rounded-full pointer-events-none group-hover:bg-amber-500/20 transition-all duration-700" />
-            <div className="w-16 h-16 rounded-full bg-stone-900 border border-amber-500/30 flex items-center justify-center text-3xl mb-6 shadow-inner text-amber-500 mb-6 drop-shadow-md">
-              📱
-            </div>
-            <h2 className="text-2xl font-black text-white mb-3 tracking-tight">Customer Scanner Display</h2>
-            <p className="text-stone-400 font-medium mb-8 max-w-lg">
-              Open the secure, auto-refreshing digital QR Code on an iPad or tablet facing your customers at the register.
-            </p>
-            <a
-              href={`/display-qr/${shopId}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-amber py-4 px-10 rounded-xl text-lg shadow-xl shadow-amber-500/20 font-bold inline-flex items-center gap-3 transition-transform hover:scale-[1.02]"
-            >
-              Open Live Display <span className="text-xl">↗</span>
-            </a>
-          </div>
+
           {/* Shop Logo */}
           <div className="glass-card p-6 bg-gradient-to-br from-stone-900/50 to-stone-900/10">
             <h2 className="text-lg font-bold text-stone-100 mb-1">Shop Logo</h2>
