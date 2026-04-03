@@ -109,7 +109,7 @@ export default function SetupPage() {
   if (pageState === 'input') {
     return (
       <div className="flex-1 w-full max-w-lg mx-auto px-6 py-20 relative">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-amber-500/10 blur-[150px] rounded-full pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[radial-gradient(circle,rgba(245,158,11,0.12)_0%,transparent_60%)] rounded-full pointer-events-none" />
 
         <div className="relative z-10">
           <Link href="/my-shops" className="group inline-flex items-center gap-2 text-stone-400 hover:text-amber-400 font-medium mb-12 transition-colors">
@@ -174,7 +174,7 @@ export default function SetupPage() {
 
     return (
       <div className="flex-1 w-full max-w-lg mx-auto px-6 py-20 relative">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-amber-500/10 blur-[150px] rounded-full pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[radial-gradient(circle,rgba(245,158,11,0.12)_0%,transparent_60%)] rounded-full pointer-events-none" />
 
         <div className="relative z-10">
           <div className="text-center mb-10 animate-fadeUp">
@@ -190,7 +190,7 @@ export default function SetupPage() {
             <div className="text-center mb-8">
               <h3 className="text-lg font-bold text-stone-300 uppercase tracking-widest mb-8">Customer Scan Code</h3>
               <div ref={qrRef} className="bg-white p-6 rounded-3xl inline-block border-[8px] border-stone-900 shadow-2xl group-hover:scale-105 transition-transform duration-500">
-                <QRCodeSVG value={scanUrl} size={200} level="H" includeMargin={false} fgColor="#000000" bgColor="#ffffff" />
+                <QRCodeSVG value={scanUrl} size={200} level="M" includeMargin={false} fgColor="#000000" bgColor="#ffffff" />
               </div>
             </div>
             <div className="space-y-3">

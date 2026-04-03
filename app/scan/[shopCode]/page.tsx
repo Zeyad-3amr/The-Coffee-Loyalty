@@ -113,7 +113,7 @@ export default function ScanPage({ params }: ScanPageProps) {
   if (pageState === 'input') {
     return (
       <div className="flex-1 w-full max-w-sm mx-auto px-6 py-24 relative flex flex-col justify-center animate-fadeUp">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-amber-500/10 blur-[130px] rounded-full pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[radial-gradient(circle,rgba(245,158,11,0.12)_0%,transparent_60%)] rounded-full pointer-events-none" />
         
         <div className="glass-card p-10 relative z-10 mx-auto w-full shadow-2xl">
           <div className="text-center mb-8">
@@ -162,7 +162,7 @@ export default function ScanPage({ params }: ScanPageProps) {
   if (pageState === 'confirm') {
     return (
       <div className="flex-1 w-full max-w-sm mx-auto px-6 py-24 relative flex flex-col justify-center animate-fadeUp">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-amber-500/10 blur-[130px] rounded-full pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[radial-gradient(circle,rgba(245,158,11,0.12)_0%,transparent_60%)] rounded-full pointer-events-none" />
         
         <div className="glass-card p-10 relative z-10 text-center shadow-2xl">
           <h2 className="text-2xl font-black text-stone-100 mb-6 tracking-tight">Confirm Number</h2>
@@ -200,7 +200,7 @@ export default function ScanPage({ params }: ScanPageProps) {
   if (pageState === 'success') {
     return (
       <div className="flex-1 w-full max-w-sm mx-auto px-6 py-24 relative flex flex-col justify-center animate-fadeUp">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-amber-500/15 blur-[120px] rounded-full pointer-events-none" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-[radial-gradient(circle,rgba(245,158,11,0.15)_0%,transparent_60%)] rounded-full pointer-events-none" />
         
         <div className="relative z-10 text-center">
           <div className="mb-10">
@@ -276,7 +276,7 @@ export default function ScanPage({ params }: ScanPageProps) {
         
         {/* Wild background glows for reward state */}
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-amber-900/40 via-stone-950 to-orange-900/30 -z-10" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-amber-500/20 blur-[150px] rounded-full pointer-events-none -z-10" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[radial-gradient(circle,rgba(245,158,11,0.20)_0%,transparent_60%)] rounded-full pointer-events-none -z-10" />
 
         <div className="relative text-center w-full z-10 animate-fadeUp">
           <div className="absolute -top-16 -left-6 text-6xl opacity-30" style={{animation: 'float 4s ease-in-out infinite'}}>✨</div>

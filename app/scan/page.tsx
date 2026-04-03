@@ -3,7 +3,7 @@ import Link from 'next/link';
 export default function ScanPage() {
   return (
     <div className="flex-1 w-full flex flex-col items-center justify-center px-6 py-20 relative">
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-amber-500/10 blur-[150px] rounded-full pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[radial-gradient(circle,rgba(245,158,11,0.12)_0%,transparent_60%)] rounded-full pointer-events-none" />
       
       <div className="w-full max-w-md text-center animate-fadeUp relative z-10 glass-card p-10 shadow-2xl">
         <div className="w-20 h-20 bg-stone-900 rounded-3xl mx-auto flex items-center justify-center text-5xl mb-6 shadow-inner border border-white/5">

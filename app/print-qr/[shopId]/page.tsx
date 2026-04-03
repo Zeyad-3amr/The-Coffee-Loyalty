@@ -133,7 +133,7 @@ export default function PrintQRPage({ params }: PrintPageProps) {
             <QRCodeSVG
               value={scanUrl}
               size={260}
-              level="H"
+              level="M"
               includeMargin={false}
               fgColor="#000000"
               bgColor="#ffffff"

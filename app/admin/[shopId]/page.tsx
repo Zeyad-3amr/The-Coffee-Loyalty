@@ -184,7 +184,7 @@ export default function AdminPage({ params }: AdminPageProps) {
       </div>
 
       <div className="relative flex-1">
-        <div className="absolute top-20 left-0 w-[400px] h-[400px] bg-amber-500/5 blur-[150px] rounded-full pointer-events-none" />
+        <div className="absolute top-20 left-0 w-[400px] h-[400px] bg-[radial-gradient(circle,rgba(245,158,11,0.06)_0%,transparent_60%)] rounded-full pointer-events-none" />
 
       {/* Main Content */}
       <main className="flex-1 w-full max-w-7xl mx-auto px-6 py-10 z-10">
