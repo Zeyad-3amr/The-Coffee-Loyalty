@@ -190,7 +190,7 @@ export default function SetupPage() {
             <div className="text-center mb-8">
               <h3 className="text-lg font-bold text-stone-300 uppercase tracking-widest mb-8">Customer Scan Code</h3>
               <div ref={qrRef} className="bg-white p-6 rounded-3xl inline-block border-[8px] border-stone-900 shadow-2xl group-hover:scale-105 transition-transform duration-500">
-                <QRCodeSVG value={scanUrl} size={200} level="M" includeMargin={false} fgColor="#000000" bgColor="#ffffff" />
+                <QRCodeSVG value={scanUrl} size={160} level="M" includeMargin={false} fgColor="#000000" bgColor="#ffffff" />
               </div>
             </div>
             <div className="space-y-3">
