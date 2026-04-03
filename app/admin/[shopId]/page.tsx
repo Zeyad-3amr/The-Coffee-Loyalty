@@ -36,7 +36,8 @@ interface AdminData {
   totals?: {
     totalCustomers: number;
     totalStampsGiven: number;
-    totalRewardsRedeemed: number;
+    totalRewardsGiven: number;
+    totalActiveRewards: number;
   };
 }
 
@@ -265,7 +266,7 @@ export default function AdminPage({ params }: AdminPageProps) {
           </div>
 
           {/* Statistics Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
             <div className="glass-card-hover p-6 relative overflow-hidden group">
               <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-amber-600 to-amber-400 opacity-50 group-hover:opacity-100 transition-opacity" />
               <div className="text-stone-400 text-xs font-bold uppercase tracking-widest mb-2">Total Customers</div>
@@ -281,10 +282,17 @@ export default function AdminPage({ params }: AdminPageProps) {
               </div>
             </div>
             <div className="glass-card-hover p-6 relative overflow-hidden group">
+              <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-orange-600 to-orange-400 opacity-50 group-hover:opacity-100 transition-opacity" />
+              <div className="text-stone-400 text-xs font-bold uppercase tracking-widest mb-2">Free Coffees Given</div>
+              <div className="text-4xl font-black text-white drop-shadow-md">
+                {adminData?.totals?.totalRewardsGiven ?? 0}
+              </div>
+            </div>
+            <div className="glass-card-hover p-6 relative overflow-hidden group">
               <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-green-600 to-green-400 opacity-50 group-hover:opacity-100 transition-opacity" />
               <div className="text-stone-400 text-xs font-bold uppercase tracking-widest mb-2">Active Rewards</div>
               <div className="text-4xl font-black text-white drop-shadow-md">
-                {adminData?.totals?.totalRewardsRedeemed ?? 0}
+                {adminData?.totals?.totalActiveRewards ?? 0}
               </div>
             </div>
           </div>
