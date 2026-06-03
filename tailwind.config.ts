@@ -12,6 +12,22 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        // Warm espresso-tinted neutral — remaps the default `stone` scale used
+        // across the app so the whole UI feels like coffee (deep espresso darks,
+        // clean warm-cream lights) while amber stays the accent.
+        stone: {
+          50: "#faf7f2",
+          100: "#f3ece3",
+          200: "#e4d9ca",
+          300: "#cabca9",
+          400: "#a8967f",
+          500: "#84725f",
+          600: "#615345",
+          700: "#473a2e",
+          800: "#2f251c",
+          900: "#211811",
+          950: "#150e09",
+        },
       },
       keyframes: {
         fadeUp: {
