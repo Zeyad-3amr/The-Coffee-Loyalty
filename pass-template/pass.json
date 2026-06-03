@@ -1,0 +1,51 @@
+{
+  "formatVersion": 1,
+  "passTypeIdentifier": "PASS_TYPE_IDENTIFIER_PLACEHOLDER",
+  "serialNumber": "SERIAL_PLACEHOLDER",
+  "teamIdentifier": "TEAM_IDENTIFIER_PLACEHOLDER",
+  "webServiceURL": "WEB_SERVICE_URL_PLACEHOLDER",
+  "authenticationToken": "AUTH_TOKEN_PLACEHOLDER",
+  "organizationName": "Rekur",
+  "description": "Coffee Loyalty Card",
+  "logoText": "",
+  "foregroundColor": "rgb(251, 191, 36)",
+  "backgroundColor": "rgb(12, 10, 9)",
+  "labelColor": "rgb(168, 162, 158)",
+  "storeCard": {
+    "headerFields": [
+      {
+        "key": "stamps",
+        "label": "STAMPS",
+        "value": "0 / 10"
+      }
+    ],
+    "primaryFields": [
+      {
+        "key": "reward",
+        "label": "REWARD",
+        "value": "Free Coffee"
+      }
+    ],
+    "auxiliaryFields": [
+      {
+        "key": "shop",
+        "label": "SHOP",
+        "value": "SHOP_NAME_PLACEHOLDER"
+      }
+    ]
+  },
+  "barcode": {
+    "message": "STAMP_ID_PLACEHOLDER",
+    "format": "PKBarcodeFormatQR",
+    "messageEncoding": "iso-8859-1",
+    "altText": "Show to cashier"
+  },
+  "barcodes": [
+    {
+      "message": "STAMP_ID_PLACEHOLDER",
+      "format": "PKBarcodeFormatQR",
+      "messageEncoding": "iso-8859-1",
+      "altText": "Show to cashier"
+    }
+  ]
+}
