@@ -10,10 +10,13 @@
     "postinstall": "prisma generate"
   },
   "dependencies": {
+    "@parse/node-apn": "^8.1.0",
     "@supabase/supabase-js": "^2.100.1",
+    "@zxing/browser": "^0.2.0",
     "html-to-image": "^1.11.13",
     "nanoid": "^5.1.7",
     "next": "14.2.35",
+    "passkit-generator": "^3.5.7",
     "pg": "^8.11.3",
     "qrcode.react": "^4.2.0",
     "react": "^18",

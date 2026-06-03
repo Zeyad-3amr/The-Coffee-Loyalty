@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { query, getClient } from '@/app/lib/db';
 import { nanoid } from 'nanoid';
+import { createPass, pushPassUpdate } from '@/app/lib/wallet/wallet-service';
 
 import crypto from 'crypto';
 
@@ -55,7 +56,7 @@ export async function POST(request: NextRequest) {
 
     // Find shop
     const shopResult = await client.query(
-      'SELECT id FROM "Shop" WHERE "qrCode" = $1',
+      'SELECT id, name, "walletEnabled" FROM "Shop" WHERE "qrCode" = $1',
       [shopCode]
     );
 
@@ -68,6 +69,8 @@ export async function POST(request: NextRequest) {
     }
 
     const shopId = shopResult.rows[0].id;
+    const shopName = shopResult.rows[0].name;
+    const walletEnabled = shopResult.rows[0].walletEnabled;
     const now = new Date();
     const COOLDOWN_MS = 7 * 60 * 1000;
 
@@ -142,17 +145,30 @@ export async function POST(request: NextRequest) {
       `UPDATE "Stamp" SET "stampCount" = $1, "lastScannedAt" = $2, "rewardActive" = $3, "rewardExpiresAt" = $4, "updatedAt" = NOW(),
        "totalScans" = "totalScans" + 1,
        "totalRewards" = "totalRewards" + ${rewardActive ? 1 : 0}
-       WHERE id = $5 RETURNING *`,
+       WHERE id = $5 RETURNING "stampCount", "rewardActive", "rewardExpiresAt", "passSerialNumber"`,
       [newStampCount, now, rewardActive, rewardExpiresAt, stamp.id]
     );
 
     await client.query('COMMIT');
+
+    let passUrl: string | undefined;
+
+    if (walletEnabled) {
+      const existingSerial = updatedStamp.rows[0].passSerialNumber;
+      if (!existingSerial) {
+        const passResult = await createPass(stamp.id, updatedStamp.rows[0].stampCount, shopName);
+        passUrl = passResult.passUrl;
+      } else {
+        pushPassUpdate(existingSerial).catch(console.error);
+      }
+    }
 
     return NextResponse.json({
       success: true,
       stampCount: updatedStamp.rows[0].stampCount,
       rewardActive: updatedStamp.rows[0].rewardActive,
       rewardExpiresAt: updatedStamp.rows[0].rewardExpiresAt,
+      ...(passUrl ? { passUrl } : {}),
     });
   } catch (error) {
     await client.query('ROLLBACK');
