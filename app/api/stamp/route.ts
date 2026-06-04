@@ -156,10 +156,22 @@ export async function POST(request: NextRequest) {
     if (walletEnabled) {
       const existingSerial = updatedStamp.rows[0].passSerialNumber;
       if (!existingSerial) {
-        const passResult = await createPass(stamp.id, updatedStamp.rows[0].stampCount, shopName);
-        passUrl = passResult.passUrl;
+        // Create new pass — runs after COMMIT so a failure doesn't roll back the stamp
+        try {
+          const passResult = await createPass(stamp.id, updatedStamp.rows[0].stampCount, shopName);
+          passUrl = passResult.passUrl;
+        } catch (err) {
+          console.error('Pass creation failed (stamp already saved):', err);
+        }
       } else {
-        pushPassUpdate(existingSerial).catch(console.error);
+        // Push update to existing installed pass (fire-and-forget)
+        pushPassUpdate(
+          existingSerial,
+          stamp.id,
+          updatedStamp.rows[0].stampCount,
+          shopName,
+          updatedStamp.rows[0].rewardActive,
+        ).catch(console.error);
       }
     }
 

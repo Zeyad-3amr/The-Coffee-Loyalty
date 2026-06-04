@@ -1,70 +1,104 @@
-import { PKPass } from 'passkit-generator';
-import path from 'path';
-import fs from 'fs';
-import { loadCertificates } from './cert-loader';
-import type { PassBuildParams } from './types';
+/**
+ * WalletWallet API — replaces passkit-generator (which required Apple certs).
+ * Docs: https://www.walletwallet.dev/docs/
+ * Free tier: 1,000 passes/month, no Apple Developer account needed.
+ */
 
-function templateFile(name: string): Buffer {
-  return fs.readFileSync(path.join(process.cwd(), 'pass-template', name));
+const BASE_URL = 'https://api.walletwallet.dev';
+
+function apiKey(): string {
+  const key = process.env.WALLETWALLET_API_KEY;
+  if (!key) throw new Error('Missing WALLETWALLET_API_KEY env var');
+  return key;
 }
 
-function requireEnv(name: string): string {
-  const val = process.env[name];
-  if (!val) throw new Error(`Missing required env var: ${name}`);
-  return val;
-}
-
-export async function buildPass(params: PassBuildParams): Promise<Buffer> {
-  const { stampId, serialNumber, authToken, stampCount, shopName } = params;
-
-  const passJson = {
-    formatVersion: 1,
-    passTypeIdentifier: requireEnv('PASS_TYPE_IDENTIFIER'),
-    serialNumber,
-    teamIdentifier: requireEnv('TEAM_IDENTIFIER'),
-    webServiceURL: requireEnv('PASS_WEB_SERVICE_URL'),
-    authenticationToken: authToken,
-    organizationName: 'Rekur',
-    description: 'Coffee Loyalty Card',
-    logoText: '',
-    foregroundColor: 'rgb(251, 191, 36)',
-    backgroundColor: 'rgb(12, 10, 9)',
-    labelColor: 'rgb(168, 162, 158)',
-    storeCard: {
-      headerFields: [
-        { key: 'stamps', label: 'STAMPS', value: `${stampCount} / 10` },
-      ],
-      primaryFields: [
-        {
-          key: 'reward',
-          label: 'REWARD',
-          value: stampCount >= 10 ? '🎉 Free Coffee Ready!' : 'Free Coffee at 10 Stamps',
-        },
-      ],
-      auxiliaryFields: [
-        { key: 'shop', label: 'SHOP', value: shopName },
-      ],
-    },
-    barcodes: [
+function passBody(stampId: string, stampCount: number, shopName: string, rewardActive: boolean) {
+  return {
+    barcodeValue: stampId,
+    barcodeFormat: 'QR',
+    logoText: shopName,
+    organizationName: shopName,
+    description: `${shopName} Loyalty Card`,
+    foregroundColor: 'rgb(58, 38, 22)',
+    backgroundColor: 'rgb(231, 211, 184)',
+    labelColor: 'rgb(124, 96, 67)',
+    headerFields: [
       {
-        message: stampId,
-        format: 'PKBarcodeFormatQR',
-        messageEncoding: 'iso-8859-1',
-        altText: 'Show to cashier',
+        key: 'stamps',
+        label: 'STAMPS',
+        value: rewardActive ? '🎉 Free Coffee!' : `${stampCount} / 10`,
+      },
+    ],
+    primaryFields: [
+      {
+        key: 'reward',
+        label: rewardActive ? 'REWARD READY' : 'COLLECT 10 STAMPS',
+        value: rewardActive ? 'Show to cashier' : 'Free coffee awaits',
+      },
+    ],
+    auxiliaryFields: [
+      {
+        key: 'shop',
+        label: 'SHOP',
+        value: shopName,
       },
     ],
   };
+}
 
-  const pass = new PKPass(
-    {
-      'pass.json': Buffer.from(JSON.stringify(passJson)),
-      'icon.png': templateFile('icon.png'),
-      'icon@2x.png': templateFile('icon@2x.png'),
-      'logo.png': templateFile('logo.png'),
-      'logo@2x.png': templateFile('logo@2x.png'),
+/**
+ * Create a new pass via WalletWallet API.
+ * Returns { serialNumber, passFileUrl } where passFileUrl is the .pkpass download link.
+ */
+export async function createWalletPass(
+  stampId: string,
+  stampCount: number,
+  shopName: string,
+): Promise<{ serialNumber: string; passFileUrl: string }> {
+  const res = await fetch(`${BASE_URL}/api/pkpass`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${apiKey()}`,
     },
-    loadCertificates(),
-  );
+    body: JSON.stringify(passBody(stampId, stampCount, shopName, false)),
+  });
 
-  return pass.getAsBuffer();
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(`WalletWallet create failed: ${res.status} ${err}`);
+  }
+
+  const serialNumber = res.headers.get('X-Serial-Number') ?? '';
+  if (!serialNumber) throw new Error('WalletWallet did not return X-Serial-Number');
+
+  // Customers tap this URL to add the pass to Apple Wallet
+  const passFileUrl = `${BASE_URL}/api/pkpass/${serialNumber}/download`;
+
+  return { serialNumber, passFileUrl };
+}
+
+/**
+ * Update an existing pass via WalletWallet API (triggers APNs push automatically).
+ */
+export async function updateWalletPass(
+  serialNumber: string,
+  stampId: string,
+  stampCount: number,
+  shopName: string,
+  rewardActive: boolean,
+): Promise<void> {
+  const res = await fetch(`${BASE_URL}/api/pkpass/${serialNumber}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${apiKey()}`,
+    },
+    body: JSON.stringify(passBody(stampId, stampCount, shopName, rewardActive)),
+  });
+
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(`WalletWallet update failed: ${res.status} ${err}`);
+  }
 }
