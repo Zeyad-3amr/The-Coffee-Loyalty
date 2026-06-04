@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { query } from '@/app/lib/db';
+import { passBody } from '@/app/lib/wallet/pass-builder';
 
 /**
  * GET /api/wallet/pass/[stampId]
@@ -38,33 +39,7 @@ export async function GET(
       'Content-Type': 'application/json',
       Authorization: `Bearer ${key}`,
     },
-    body: JSON.stringify({
-      barcodeValue: stampId,
-      barcodeFormat: 'QR',
-      logoText: shopName,
-      organizationName: shopName,
-      description: `${shopName} Loyalty Card`,
-      foregroundColor: 'rgb(58, 38, 22)',
-      backgroundColor: 'rgb(231, 211, 184)',
-      labelColor: 'rgb(124, 96, 67)',
-      headerFields: [
-        {
-          key: 'stamps',
-          label: 'STAMPS',
-          value: rewardActive ? '🎉 Free Coffee!' : `${stampCount} / 10`,
-        },
-      ],
-      primaryFields: [
-        {
-          key: 'reward',
-          label: rewardActive ? 'REWARD READY' : 'COLLECT 10 STAMPS',
-          value: rewardActive ? 'Show to cashier' : 'Free coffee awaits',
-        },
-      ],
-      auxiliaryFields: [
-        { key: 'shop', label: 'SHOP', value: shopName },
-      ],
-    }),
+    body: JSON.stringify(passBody(stampId, stampCount, shopName, rewardActive)),
   });
 
   if (!wwRes.ok) {

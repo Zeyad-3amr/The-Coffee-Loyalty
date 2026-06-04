@@ -12,28 +12,52 @@ function apiKey(): string {
   return key;
 }
 
-function passBody(stampId: string, stampCount: number, shopName: string, rewardActive: boolean) {
+/**
+ * Build the WalletWallet pass body — single source of truth for pass design.
+ * Cream theme: warm latte background, espresso text, amber accent.
+ */
+export function passBody(
+  stampId: string,
+  stampCount: number,
+  shopName: string,
+  rewardActive: boolean,
+) {
+  // Visual progress indicator using filled / empty dots
+  const filled = Math.min(10, rewardActive ? 10 : stampCount);
+  const progressDots = '●'.repeat(filled) + '○'.repeat(10 - filled);
+
   return {
     barcodeValue: stampId,
     barcodeFormat: 'QR',
     logoText: shopName,
     organizationName: shopName,
     description: `${shopName} Loyalty Card`,
+    // Cream theme
     foregroundColor: 'rgb(58, 38, 22)',
     backgroundColor: 'rgb(231, 211, 184)',
     labelColor: 'rgb(124, 96, 67)',
     headerFields: [
       {
         key: 'stamps',
-        label: 'STAMPS',
-        value: rewardActive ? '🎉 Free Coffee!' : `${stampCount} / 10`,
+        label: rewardActive ? 'REWARD' : 'STAMPS',
+        value: rewardActive ? '🎉 Ready' : `${stampCount} / 10`,
+        changeMessage: rewardActive
+          ? 'Free coffee unlocked! 🎉'
+          : 'You now have %@ stamps',
       },
     ],
     primaryFields: [
       {
-        key: 'reward',
-        label: rewardActive ? 'REWARD READY' : 'COLLECT 10 STAMPS',
-        value: rewardActive ? 'Show to cashier' : 'Free coffee awaits',
+        key: 'headline',
+        label: rewardActive ? 'YOUR REWARD' : 'COLLECT 10 STAMPS',
+        value: rewardActive ? 'Free coffee — show to cashier' : 'Free coffee awaits',
+      },
+    ],
+    secondaryFields: [
+      {
+        key: 'progress',
+        label: 'PROGRESS',
+        value: progressDots,
       },
     ],
     auxiliaryFields: [
@@ -41,6 +65,18 @@ function passBody(stampId: string, stampCount: number, shopName: string, rewardA
         key: 'shop',
         label: 'SHOP',
         value: shopName,
+      },
+    ],
+    backFields: [
+      {
+        key: 'how',
+        label: 'How it works',
+        value: `Show this pass at ${shopName} when ordering. Earn 1 stamp per visit. At 10 stamps, your next coffee is free.`,
+      },
+      {
+        key: 'powered',
+        label: 'Powered by',
+        value: 'Rekur — digital loyalty for coffee shops',
       },
     ],
   };
