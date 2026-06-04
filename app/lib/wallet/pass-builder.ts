@@ -72,8 +72,8 @@ export async function createWalletPass(
   const serialNumber = res.headers.get('X-Serial-Number') ?? '';
   if (!serialNumber) throw new Error('WalletWallet did not return X-Serial-Number');
 
-  // Landing page that prompts "Add to Apple Wallet" on iPhone
-  const passFileUrl = `https://walletwallet.dev/pass/${serialNumber}`;
+  // passFileUrl is set by the caller using the stampId-based route
+  const passFileUrl = '';
 
   return { serialNumber, passFileUrl };
 }

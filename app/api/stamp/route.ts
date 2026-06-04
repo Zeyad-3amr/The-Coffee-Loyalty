@@ -155,18 +155,15 @@ export async function POST(request: NextRequest) {
 
     if (walletEnabled) {
       const existingSerial = updatedStamp.rows[0].passSerialNumber;
+      // Always return our own proxy URL — works for new and existing passes
+      passUrl = `${process.env.NEXT_PUBLIC_APP_URL || ''}/api/wallet/pass/${stamp.id}`;
+
       if (!existingSerial) {
-        // First time — create a new pass
-        try {
-          const passResult = await createPass(stamp.id, updatedStamp.rows[0].stampCount, shopName);
-          passUrl = passResult.passUrl;
-        } catch (err) {
-          console.error('Pass creation failed (stamp already saved):', err);
-        }
+        // First time — pre-create a pass so the serial is stored in DB
+        createPass(stamp.id, updatedStamp.rows[0].stampCount, shopName)
+          .catch((err) => console.error('Pass pre-creation failed:', err));
       } else {
-        // Pass already exists — always return the URL so the button shows,
-        // and push an update to refresh the installed pass in the background
-        passUrl = `https://walletwallet.dev/pass/${existingSerial}`;
+        // Push update to refresh the installed pass in the background
         pushPassUpdate(
           existingSerial,
           stamp.id,
