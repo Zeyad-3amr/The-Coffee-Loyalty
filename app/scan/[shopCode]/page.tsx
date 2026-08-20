@@ -3,6 +3,7 @@
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { validateEgyptPhoneNumber, formatPhoneNumber, isRewardExpired } from '@/app/lib/utils';
+import { deriveBrandRamp, isValidHex, INK_FOR, normalizeTextMode, cardCssVars } from '@/app/lib/theme';
 import { ErrorDisplay } from '@/app/components/ErrorDisplay';
 import { LoadingSpinner } from '@/app/components/LoadingSpinner';
 
@@ -38,7 +39,33 @@ function ScanLogic({ shopCode }: { shopCode: string }) {
   const [passUrl, setPassUrl] = useState<string | null>(null);
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [shopData, setShopData] = useState<{name: string, logoUrl: string|null} | null>(null);
+  const [shopData, setShopData] = useState<{name: string, logoUrl: string|null, brandColor?: string|null, bgColor?: string|null, textColor?: string|null} | null>(null);
+
+  // Repaint the accent to the shop's brand color across every scan state.
+  useEffect(() => {
+    const color = shopData?.brandColor;
+    if (!color) return;
+    const ramp = deriveBrandRamp(color);
+    const root = document.documentElement;
+    Object.entries(ramp).forEach(([s, v]) => root.style.setProperty(`--brand-${s}`, v));
+    return () => Object.keys(ramp).forEach((s) => root.style.removeProperty(`--brand-${s}`));
+  }, [shopData?.brandColor]);
+
+  // Apply the shop's page background + text color, and the derived card surface.
+  useEffect(() => {
+    if (!shopData) return;
+    const root = document.documentElement;
+    const set: string[] = [];
+    const put = (k: string, v: string) => { root.style.setProperty(k, v); set.push(k); };
+    if (shopData.bgColor && isValidHex(shopData.bgColor)) put('--page-bg', shopData.bgColor);
+    put('--page-ink', INK_FOR[normalizeTextMode(shopData.textColor)]);
+    // Card surface vars derived from bg + text mode.
+    cardCssVars(shopData.bgColor, shopData.textColor)
+      .split(';')
+      .filter(Boolean)
+      .forEach((decl) => { const i = decl.indexOf(':'); put(decl.slice(0, i), decl.slice(i + 1)); });
+    return () => set.forEach((k) => root.style.removeProperty(k));
+  }, [shopData?.bgColor, shopData?.textColor]);
 
   useEffect(() => {
     // Prevent device-level scan abuse across all numbers
@@ -148,10 +175,10 @@ function ScanLogic({ shopCode }: { shopCode: string }) {
   };
 
   const brandFooter = (
-    <div className="mt-8 flex items-center justify-center gap-1.5 opacity-60">
+    <div className="mt-8 flex items-center justify-center gap-1.5 opacity-70">
       <img src="/logo-large.svg" alt="Rekur" className="h-4 w-4" />
-      <span className="text-[11px] font-medium text-stone-500 tracking-wide">
-        powered by <span className="text-stone-400 font-semibold">Rekur</span>
+      <span className="on-page text-[11px] font-medium tracking-wide">
+        powered by <span className="on-page font-semibold">Rekur</span>
       </span>
     </div>
   );
@@ -213,7 +240,7 @@ function ScanLogic({ shopCode }: { shopCode: string }) {
                 onChange={handlePhoneChange}
                 placeholder="01012345678"
                 maxLength={11}
-                className={`w-full px-5 py-4 bg-stone-950/80 backdrop-blur-sm border rounded-xl text-center text-xl font-mono tracking-widest text-stone-100 placeholder-stone-600 focus:outline-none focus:ring-2 transition shadow-inner ${
+                className={`w-full px-5 py-4 backdrop-blur-sm border rounded-xl text-center text-xl font-mono tracking-widest text-stone-100 placeholder-stone-600 focus:outline-none focus:ring-2 transition shadow-inner ${
                   phoneError
                     ? 'border-red-500/50 focus:ring-red-500/50'
                     : 'border-white/10 focus:ring-amber-500/50 focus:border-amber-500/50'
@@ -365,7 +392,7 @@ function ScanLogic({ shopCode }: { shopCode: string }) {
         <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(60%_45%_at_50%_35%,rgba(251,191,36,0.28),transparent_70%)]" />
 
         <div className="w-full max-w-sm">
-          <div className="relative rounded-3xl bg-[#fffaf2] border border-amber-300/40 shadow-[0_30px_80px_-30px_rgba(120,75,20,0.35)] p-8 text-center">
+          <div className="relative rounded-3xl border border-amber-300/40 shadow-[0_30px_80px_-30px_rgba(120,75,20,0.35)] p-8 text-center" style={{ background: 'var(--card-bg, #fffaf2)' }}>
             {/* Status pill */}
             <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-green-100/70 border border-green-300/60 text-green-800 text-xs font-medium">
               <span className="relative flex h-1.5 w-1.5">
@@ -427,7 +454,7 @@ function ScanLogic({ shopCode }: { shopCode: string }) {
   if (pageState === 'cooldown') {
     return (
       <div className="scan-cream flex-1 w-full max-w-sm mx-auto px-4 py-8 md:px-6 md:py-24 relative flex flex-col justify-center overflow-x-hidden">
-        <div className="rounded-3xl bg-[#fffaf2] border border-stone-700/10 shadow-[0_30px_60px_-30px_rgba(120,75,20,0.25)] p-8 text-center">
+        <div className="rounded-3xl border shadow-[0_30px_60px_-30px_rgba(120,75,20,0.25)] p-8 text-center" style={{ background: 'var(--card-bg, #fffaf2)', borderColor: 'var(--card-border, rgba(80,52,28,0.1))' }}>
           <div className="w-12 h-12 mx-auto mb-5 rounded-full bg-amber-100/70 border border-amber-300/40 flex items-center justify-center text-amber-700">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="w-5 h-5">
               <circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>

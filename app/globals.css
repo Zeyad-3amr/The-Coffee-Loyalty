@@ -5,6 +5,34 @@
 :root {
   --background: #150e09;
   --foreground: #f3ece3;
+
+  /* --- Accent ramp (Rekur amber default). Overridden per-shop on customer
+     pages via <BrandVars>. Space-separated RGB triples for alpha support. --- */
+  --brand-50: 255 251 235;
+  --brand-100: 254 243 199;
+  --brand-200: 253 230 138;
+  --brand-300: 252 211 77;
+  --brand-400: 251 191 36;
+  --brand-500: 245 158 11;
+  --brand-600: 217 119 6;
+  --brand-700: 180 83 9;
+  --brand-800: 146 64 14;
+  --brand-900: 120 53 15;
+  --brand-950: 69 26 3;
+
+  /* --- Cream neutrals (semantic tokens; single source of truth) --- */
+  --bg: 231 211 184;            /* #e7d3b8 page */
+  --surface: 251 243 231;       /* #fbf3e7 card */
+  --surface-2: 241 230 211;     /* #f1e6d3 inset */
+  --surface-input: 255 250 242; /* #fffaf2 inputs */
+  --ink: 58 38 22;              /* #3a2616 primary text */
+  --ink-muted: 124 96 67;       /* #7c6043 secondary */
+  --ink-subtle: 154 129 96;     /* #9a8160 muted */
+  --border: 80 52 28;           /* used at low alpha for hairlines */
+
+  /* Per-shop customer-page theming (overridden on scan / display pages). */
+  --page-bg: #e7d3b8;   /* background behind the scan/display card */
+  --page-ink: #231811;  /* on-background text (white or black per shop) */
 }
 
 html {
@@ -175,4 +203,58 @@ textarea::placeholder {
 .scan-cream {
   min-height: 100vh;
   min-height: 100dvh;
+  background: var(--page-bg, #e7d3b8);
+  transition: background 0.3s ease;
+}
+/* On-background text (footer, tagline) follows the shop's chosen text color. */
+.on-page {
+  color: var(--page-ink, #231811);
+}
+
+/*
+ * Per-shop CARD theming on the customer scan flow.
+ * The scan page was authored dark then retinted cream by the V2 block above.
+ * These rules are scoped to `.scan-cream` and use higher specificity (+ !important)
+ * so a shop's derived card surface (--card-*) wins over the generic cream overrides,
+ * giving a coherent light OR dark card that matches the shop's chosen background.
+ * Falls back to the cream defaults when the vars are unset.
+ */
+.scan-cream .glass-card {
+  background-color: var(--card-bg, #fbf3e7) !important;
+  border-color: var(--card-border, rgba(80,52,28,0.14)) !important;
+}
+.scan-cream [class*="text-stone-1"],
+.scan-cream [class*="text-stone-2"],
+.scan-cream [class*="text-stone-3"],
+.scan-cream [class*="text-stone-7"],
+.scan-cream [class*="text-stone-8"],
+.scan-cream [class*="text-stone-9"] {
+  color: var(--card-ink, #3a2616) !important;
+}
+.scan-cream [class*="text-stone-4"],
+.scan-cream [class*="text-stone-5"],
+.scan-cream [class*="text-stone-6"] {
+  color: var(--card-ink-muted, #7c6043) !important;
+}
+/* Gradient headings the V2 block flattened to espresso → follow card ink. */
+.scan-cream [class*="from-stone-1"] {
+  color: var(--card-ink, #3a2616) !important;
+  -webkit-text-fill-color: var(--card-ink, #3a2616) !important;
+  background-image: none !important;
+}
+.scan-cream [class*="bg-stone-7"],
+.scan-cream [class*="bg-stone-8"],
+.scan-cream [class*="bg-stone-9"] {
+  background-color: var(--card-inset, #f1e6d3) !important;
+}
+.scan-cream [class*="border-white/"] {
+  border-color: var(--card-border, rgba(80,52,28,0.14)) !important;
+}
+.scan-cream input {
+  background-color: var(--card-input, #fffaf2) !important;
+  color: var(--card-ink, #3a2616) !important;
+  border-color: var(--card-border, rgba(80,52,28,0.2)) !important;
+}
+.scan-cream input::placeholder {
+  color: var(--card-ink-muted, #b39a78) !important;
 }

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
+import { deriveBrandRamp, isValidHex, INK_FOR, normalizeTextMode } from '@/app/lib/theme';
 import { LoadingSpinner } from '@/app/components/LoadingSpinner';
 
 interface DisplayQRPageProps {
@@ -15,6 +16,9 @@ interface ShopData {
   name: string;
   qrCode: string;
   logoUrl?: string | null;
+  brandColor?: string | null;
+  bgColor?: string | null;
+  textColor?: string | null;
 }
 
 export default function DisplayQRPage({ params }: DisplayQRPageProps) {
@@ -45,6 +49,25 @@ export default function DisplayQRPage({ params }: DisplayQRPageProps) {
 
     fetchShopData();
   }, [shopId]);
+
+  // Repaint the accent to the shop's brand color on the live display.
+  useEffect(() => {
+    const color = shopData?.brandColor;
+    if (!color) return;
+    const ramp = deriveBrandRamp(color);
+    const root = document.documentElement;
+    Object.entries(ramp).forEach(([s, v]) => root.style.setProperty(`--brand-${s}`, v));
+    return () => Object.keys(ramp).forEach((s) => root.style.removeProperty(`--brand-${s}`));
+  }, [shopData?.brandColor]);
+
+  // Apply the shop's page background + text color.
+  useEffect(() => {
+    if (!shopData) return;
+    const root = document.documentElement;
+    if (shopData.bgColor && isValidHex(shopData.bgColor)) root.style.setProperty('--page-bg', shopData.bgColor);
+    root.style.setProperty('--page-ink', INK_FOR[normalizeTextMode(shopData.textColor)]);
+    return () => { root.style.removeProperty('--page-bg'); root.style.removeProperty('--page-ink'); };
+  }, [shopData?.bgColor, shopData?.textColor]);
 
   useEffect(() => {
     if (shopData) {
@@ -93,7 +116,7 @@ export default function DisplayQRPage({ params }: DisplayQRPageProps) {
   const scanUrl = qrToken.t ? `${typeof window !== 'undefined' ? window.location.origin : ''}/scan/${shopData.qrCode}?t=${qrToken.t}&s=${qrToken.s}` : '';
 
   return (
-    <div className="flex-1 flex flex-col w-full relative min-h-screen items-center justify-center p-4">
+    <div className="flex-1 flex flex-col w-full relative min-h-screen items-center justify-center p-4" style={{ background: 'var(--page-bg)', transition: 'background 0.3s ease' }}>
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-amber-500/10 blur-[150px] rounded-full pointer-events-none" />
 
       {/* Main Scanner Card */}

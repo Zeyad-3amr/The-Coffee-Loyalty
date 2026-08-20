@@ -1,5 +1,15 @@
 import type { Config } from "tailwindcss";
 
+// Every step of the accent scale resolves to a runtime CSS var so a shop can
+// repaint its brand without a rebuild. Used for both `amber` and `brand`.
+const brandScale = () =>
+  Object.fromEntries(
+    [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950].map((s) => [
+      s,
+      `rgb(var(--brand-${s}) / <alpha-value>)`,
+    ]),
+  );
+
 const config: Config = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
@@ -12,9 +22,31 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+
+        // --- Accent (per-shop configurable) ---------------------------------
+        // `amber` and `brand` both resolve to the runtime `--brand-*` CSS vars
+        // (seeded to Rekur amber in globals.css, overridden per shop on
+        // customer pages). Mapping `amber` here means every existing amber-*
+        // utility becomes the shop's brand color with zero markup churn.
+        // The `<alpha-value>` placeholder keeps `bg-amber-500/20` working.
+        amber: brandScale(),
+        brand: brandScale(),
+
+        // --- Semantic cream neutrals (new/migrated screens) -----------------
+        // Prefer these over stone-* going forward. Single source of truth.
+        bg: "rgb(var(--bg) / <alpha-value>)",
+        surface: "rgb(var(--surface) / <alpha-value>)",
+        "surface-2": "rgb(var(--surface-2) / <alpha-value>)",
+        "surface-input": "rgb(var(--surface-input) / <alpha-value>)",
+        ink: "rgb(var(--ink) / <alpha-value>)",
+        "ink-muted": "rgb(var(--ink-muted) / <alpha-value>)",
+        "ink-subtle": "rgb(var(--ink-subtle) / <alpha-value>)",
+        line: "rgb(var(--border) / <alpha-value>)",
+
         // Warm espresso-tinted neutral — remaps the default `stone` scale used
         // across the app so the whole UI feels like coffee (deep espresso darks,
         // clean warm-cream lights) while amber stays the accent.
+        // LEGACY: being migrated to the semantic tokens above, then removed.
         stone: {
           50: "#faf7f2",
           100: "#f3ece3",

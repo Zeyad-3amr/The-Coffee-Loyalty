@@ -8,11 +8,23 @@ export async function GET(
   try {
     const { shopId } = params;
 
-    // Find shop
-    const shopResult = await query(
-      'SELECT id, name, "qrCode", "logoUrl", "walletEnabled" FROM "Shop" WHERE id = $1',
-      [shopId]
-    );
+    // Find shop. brandColor is optional (migration 001) — fall back gracefully.
+    let shopResult;
+    try {
+      shopResult = await query(
+        'SELECT id, name, "qrCode", "logoUrl", "walletEnabled", "brandColor", "bgColor", "textColor" FROM "Shop" WHERE id = $1',
+        [shopId]
+      );
+    } catch (e: any) {
+      if (e?.code === '42703') {
+        shopResult = await query(
+          'SELECT id, name, "qrCode", "logoUrl", "walletEnabled" FROM "Shop" WHERE id = $1',
+          [shopId]
+        );
+      } else {
+        throw e;
+      }
+    }
 
     if (shopResult.rows.length === 0) {
       return NextResponse.json(

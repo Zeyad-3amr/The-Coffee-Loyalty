@@ -6,10 +6,24 @@ export async function GET(
   { params }: { params: { shopCode: string } }
 ) {
   try {
-    const result = await query(
-      'SELECT id, name, "logoUrl" FROM "Shop" WHERE "qrCode" = $1',
-      [params.shopCode]
-    );
+    // brandColor is optional (added by migration 001). Fall back gracefully if
+    // the column isn't present yet so the scan flow never breaks.
+    let result;
+    try {
+      result = await query(
+        'SELECT id, name, "logoUrl", "brandColor", "bgColor", "textColor" FROM "Shop" WHERE "qrCode" = $1',
+        [params.shopCode]
+      );
+    } catch (e: any) {
+      if (e?.code === '42703') {
+        result = await query(
+          'SELECT id, name, "logoUrl" FROM "Shop" WHERE "qrCode" = $1',
+          [params.shopCode]
+        );
+      } else {
+        throw e;
+      }
+    }
 
     if (result.rows.length === 0) {
       return NextResponse.json({ error: 'Shop not found' }, { status: 404 });
